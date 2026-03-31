@@ -30,4 +30,16 @@ public class ChunkHelperFunctions
                pos.z >= 0 && pos.z < gridSize;
     }
 
+    public Vector3Int DirectionToVector(DirectionEnum dir)
+    {
+        return dir switch
+        {
+            DirectionEnum.Up => Vector3Int.up,
+            DirectionEnum.Down => Vector3Int.down,
+            DirectionEnum.Left => Vector3Int.left,
+            DirectionEnum.Right => Vector3Int.right,
+            _ => Vector3Int.zero
+        };
+    }
+
 }
