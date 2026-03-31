@@ -4,6 +4,9 @@ public class PathGenerator : MonoBehaviour
 {
     [SerializeField] int gridSize = 3;
 
+    [SerializeField] bool debugMode = false;
+    [SerializeField] int seed = 0;
+
     ChunkManager chunkManager;
     ChunkHelperFunctions chf;
     ChunkPathGenerator pathGenerator;
@@ -11,6 +14,9 @@ public class PathGenerator : MonoBehaviour
 
     private void Start()
     {
+        if (debugMode)
+            RandomGen.SetSeed(seed);
+
         chunkManager = new ChunkManager(gridSize);
         chf = new ChunkHelperFunctions(gridSize);
         pathGenerator = new ChunkPathGenerator(chunkManager, chf);

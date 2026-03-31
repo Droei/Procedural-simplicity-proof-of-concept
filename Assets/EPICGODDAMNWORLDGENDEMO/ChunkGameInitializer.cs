@@ -15,8 +15,8 @@ public class ChunkGameInitializer
 
     public void SetRandomStartAndEnd()
     {
-        Vector3Int start = new(Random.Range(0, gridSize), Random.Range(0, gridSize), gridSize - 1);
-        Vector3Int end = new(Random.Range(0, gridSize), Random.Range(0, gridSize), 0);
+        Vector3Int start = new(RandomGen.Range(0, gridSize), RandomGen.Range(0, gridSize), gridSize - 1);
+        Vector3Int end = new(RandomGen.Range(0, gridSize), RandomGen.Range(0, gridSize), 0);
 
         manager.SetChunkType(start, ChunkTypeEnum.Start);
         manager.SetChunkType(end, ChunkTypeEnum.End);

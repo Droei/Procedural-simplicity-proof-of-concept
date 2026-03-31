@@ -35,13 +35,13 @@ public class ChunkPathGenerator
         int maxPossible = Mathf.Min(max, available.Count);
         int minPossible = Mathf.Min(min, maxPossible);
 
-        int amount = Random.Range(minPossible, maxPossible + 1);
+        int amount = RandomGen.Range(minPossible, maxPossible + 1);
 
         List<DirectionEnum> chosen = new();
 
         for (int i = 0; i < amount; i++)
         {
-            int index = Random.Range(0, available.Count);
+            int index = RandomGen.Range(0, available.Count);
             chosen.Add(available[index]);
             available.RemoveAt(index);
         }
