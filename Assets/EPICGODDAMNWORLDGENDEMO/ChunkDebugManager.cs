@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class ChunkDebugManager
 {
-    public static void VisualizeChunks(Chunk[] chunks, int gridSize, ChunkHelperFunctions CHF)
+    public static void VisualizeChunks(Chunk[] chunks, int gridSize)
     {
         for (int z = gridSize - 1; z >= 0; z--)
         {
@@ -16,7 +16,7 @@ public static class ChunkDebugManager
             {
                 for (int x = 0; x < gridSize; x++)
                 {
-                    Chunk chunk = chunks[CHF.ParseLocationToId(new Vector3Int(x, y, z))];
+                    Chunk chunk = chunks[ChunkHelperFunctions.ParseLocationToId(new Vector3Int(x, y, z))];
                     string symbol = chunk.chunkType switch
                     {
                         ChunkTypeEnum.Start => "<color=red>[S]</color>",
@@ -24,8 +24,7 @@ public static class ChunkDebugManager
                         ChunkTypeEnum.HoleDown => "<color=magenta>[↓]</color>",
                         ChunkTypeEnum.HoleUp => "<color=cyan>[↑]</color>",
                         ChunkTypeEnum.Normal => "<color=green>[.]</color>",
-                        ChunkTypeEnum.Nothing => "[]",
-                        _ => "[]"
+                        ChunkTypeEnum.Nothing => "[]"
                     };
 
                     sb.Append(symbol);

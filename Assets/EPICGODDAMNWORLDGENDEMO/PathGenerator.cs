@@ -8,7 +8,6 @@ public class PathGenerator : MonoBehaviour
     [SerializeField] int seed = 0;
 
     ChunkManager chunkManager;
-    ChunkHelperFunctions chf;
     ChunkPathGenerator pathGenerator;
     ChunkGameInitializer initializer;
 
@@ -18,8 +17,7 @@ public class PathGenerator : MonoBehaviour
             RandomGen.SetSeed(seed);
 
         chunkManager = new ChunkManager(gridSize);
-        chf = new ChunkHelperFunctions(gridSize);
-        pathGenerator = new ChunkPathGenerator(chunkManager, chf);
+        pathGenerator = new ChunkPathGenerator(chunkManager);
         initializer = new ChunkGameInitializer(chunkManager, pathGenerator, gridSize);
 
         for (int x = 0; x < gridSize; x++)

@@ -255,6 +255,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PathGenerator
   gridSize: 3
+  debugMode: 1
+  seed: 69
 --- !u!4 &2014427884
 Transform:
   m_ObjectHideFlags: 0

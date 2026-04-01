@@ -4,23 +4,21 @@ using UnityEngine;
 public class ChunkPathGenerator
 {
     private ChunkManager manager;
-    private readonly ChunkHelperFunctions CHF;
 
-    public ChunkPathGenerator(ChunkManager manager, ChunkHelperFunctions chf)
+    public ChunkPathGenerator(ChunkManager manager)
     {
         this.manager = manager;
-        CHF = chf;
     }
 
     public List<DirectionEnum> FindAvailableOpenings(Vector3Int location)
     {
         List<DirectionEnum> available = new();
 
-        foreach (var (dir, directionEnum) in CHF.directions)
+        foreach (var (dir, directionEnum) in ChunkHelperFunctions.directions)
         {
             Vector3Int neighbor = location + dir;
 
-            if (!CHF.IsInsideGrid(neighbor))
+            if (!ChunkHelperFunctions.IsInsideGrid(neighbor))
                 continue;
 
             if (manager.GetChunk(neighbor).chunkType == ChunkTypeEnum.Nothing)

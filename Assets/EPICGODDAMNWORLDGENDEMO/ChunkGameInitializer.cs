@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class ChunkGameInitializer
 {
@@ -25,9 +26,28 @@ public class ChunkGameInitializer
         var endDirs = generator.FindAvailableOpenings(end);
 
         var startChosen = generator.PickRandomDirections(startDirs, 2, 2);
-        manager.SetChunkTypesInDirections(start, startChosen, ChunkTypeEnum.Normal);
+        SetUpOtherChunks(manager.SetChunkTypesInDirections(start, startChosen, ChunkTypeEnum.Normal));
 
         var endChosen = generator.PickRandomDirections(endDirs, 1, 1);
-        manager.SetChunkTypesInDirections(end, endChosen, ChunkTypeEnum.Normal);
+        SetUpOtherChunks(manager.SetChunkTypesInDirections(end, endChosen, ChunkTypeEnum.Normal));
+    }
+
+    void SetUpOtherChunks(List<Vector3Int> newChunks)
+    {
+        foreach (var chunk in newChunks)
+        {
+            var potentialChunkDirs = generator.FindAvailableOpenings(chunk);
+            var chosenDirs = generator.PickRandomDirections(potentialChunkDirs, 1, 4);
+
+            manager.SetChunkTypesInDirections(chunk, chosenDirs, ChunkTypeEnum.Normal);
+        }
+
+    }
+
+    public void SetChunkPath(Vector3Int chunk)
+    {
+        var dirs = generator.FindAvailableOpenings(chunk);
+        manager.SetChunkTypesInDirections(chunk, dirs, ChunkTypeEnum.Normal);
+
     }
 }
