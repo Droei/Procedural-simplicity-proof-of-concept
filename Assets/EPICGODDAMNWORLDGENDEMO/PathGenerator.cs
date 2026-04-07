@@ -20,13 +20,7 @@ public class PathGenerator : MonoBehaviour
         pathGenerator = new ChunkPathGenerator(chunkManager);
         initializer = new ChunkGameInitializer(chunkManager, pathGenerator, gridSize);
 
-        for (int x = 0; x < gridSize; x++)
-            for (int y = 0; y < gridSize; y++)
-                for (int z = 0; z < gridSize; z++)
-                {
-                    chunkManager.SetChunk(new Vector3Int(x, y, z), new Chunk(0, new Vector3Int(x, y, z)));
-                }
-
+        chunkManager.SetUpEmptyChunks();
         initializer.SetRandomStart();
         chunkManager.VisualizeChunks();
     }

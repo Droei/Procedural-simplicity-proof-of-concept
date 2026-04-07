@@ -5,14 +5,17 @@ public class Chunk
 {
     public int id;
     public Vector3Int location;
+
+    public List<DirectionEnum> openingDirections;
+
     public List<PathDirectionEnum> chunkDirections;
     public ChunkTypeEnum chunkType = ChunkTypeEnum.Nothing;
 
     public DirectionEnum directionToOriginChunk;
 
-    public Chunk(int id, Vector3Int location)
+    public Chunk(Vector3Int location)
     {
-        this.id = id;
+        id = ChunkHelperFunctions.ParseLocationToId(location);
         this.location = location;
     }
 

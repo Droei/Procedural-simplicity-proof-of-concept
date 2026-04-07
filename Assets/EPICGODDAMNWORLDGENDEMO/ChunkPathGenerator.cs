@@ -21,7 +21,7 @@ public class ChunkPathGenerator
             if (!ChunkHelperFunctions.IsInsideGrid(neighbor))
                 continue;
 
-            if (manager.GetChunk(neighbor).chunkType == ChunkTypeEnum.Nothing)
+            if (manager.GetChunkByLocation(neighbor).chunkType == ChunkTypeEnum.Nothing)
                 available.Add(directionEnum);
         }
 

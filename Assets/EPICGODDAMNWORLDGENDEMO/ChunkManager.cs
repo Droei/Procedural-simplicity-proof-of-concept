@@ -13,49 +13,50 @@ public class ChunkManager
         chunks = new Chunk[gridSize * gridSize * gridSize];
     }
 
-    public Chunk GetChunk(Vector3Int location)
+    public Chunk GetChunkByLocation(Vector3Int location)
         => chunks[ChunkHelperFunctions.ParseLocationToId(location)];
 
-    public void SetChunk(Vector3Int location, Chunk chunk)
-        => chunks[ChunkHelperFunctions.ParseLocationToId(location)] = chunk;
-
-
-    public void SetChunkType(Vector3Int location, ChunkTypeEnum type)
-        => GetChunk(location).chunkType = type;
-
-    public DirectionEnum GetChunkDirectionToOrigin(Vector3Int location)
-        => GetChunk(location).directionToOriginChunk;
-
-    public Vector3Int SetDownHole(Vector3Int location)
+    public void SetUpEmptyChunks()
     {
-        SetChunkType(location, ChunkTypeEnum.HoleDown);
-
-        Vector3Int upHole = new Vector3Int(location.x, location.y, location.z - 1);
-        SetChunkType(upHole, ChunkTypeEnum.HoleUp);
-
-        return upHole;
+        int chunkCount = 0;
+        for (int x = 0; x < gridSize; x++)
+            for (int y = 0; y < gridSize; y++)
+                for (int z = 0; z < gridSize; z++)
+                    chunks[chunkCount++] = new(new(x, y, z));
     }
 
-    public List<Vector3Int> SetChunkTypesInDirections(Vector3Int location, List<DirectionEnum> directions, ChunkTypeEnum type)
+    public void SetChunkTypeByLocation(Vector3Int location, ChunkTypeEnum type)
+        => GetChunkByLocation(location).chunkType = type;
+
+    public DirectionEnum GetChunkDirectionToOrigin(Vector3Int location)
+        => GetChunkByLocation(location).directionToOriginChunk;
+
+    public void SetDownHole(Chunk chunk)
     {
-        List<Vector3Int> createdChunks = new();
+        SetChunkTypeByLocation(chunk.location, ChunkTypeEnum.HoleDown);
+        SetChunkTypeByLocation(new(chunk.location.x, chunk.location.y, chunk.location.z - 1), ChunkTypeEnum.HoleUp);
+    }
+
+    public List<Chunk> AddEmptyChunksInDirections(Vector3Int location, List<DirectionEnum> directions)
+    {
+        List<Chunk> activeChunks = new();
 
         foreach (var direction in directions)
         {
             Vector3Int offset = ChunkHelperFunctions.DirectionToVector(direction);
             Vector3Int target = location + offset;
 
-            Chunk chunk = GetChunk(target);
-            chunk.chunkType = type;
+            Chunk chunk = GetChunkByLocation(target);
+            chunk.chunkType = ChunkTypeEnum.Normal;
             chunk.directionToOriginChunk = ChunkHelperFunctions.GetOpposite(direction);
 
-            createdChunks.Add(target);
+            activeChunks.Add(chunk);
         }
-        return createdChunks;
+        return activeChunks;
     }
 
-    public void SetChunkDirections(Vector3Int location, List<PathDirectionEnum> pathDirections)
-        => GetChunk(location).SetDirections(pathDirections);
+    public void SetChunkDirections(Chunk chunk, List<PathDirectionEnum> pathDirections)
+        => chunk.SetDirections(pathDirections);
 
     public void VisualizeChunks()
         => ChunkDebugManager.VisualizeChunks(chunks, gridSize);
