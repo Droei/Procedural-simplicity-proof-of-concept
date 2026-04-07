@@ -26,6 +26,16 @@ public class ChunkManager
     public DirectionEnum GetChunkDirectionToOrigin(Vector3Int location)
         => GetChunk(location).directionToOriginChunk;
 
+    public Vector3Int SetDownHole(Vector3Int location)
+    {
+        SetChunkType(location, ChunkTypeEnum.HoleDown);
+
+        Vector3Int upHole = new Vector3Int(location.x, location.y, location.z - 1);
+        SetChunkType(upHole, ChunkTypeEnum.HoleUp);
+
+        return upHole;
+    }
+
     public List<Vector3Int> SetChunkTypesInDirections(Vector3Int location, List<DirectionEnum> directions, ChunkTypeEnum type)
     {
         List<Vector3Int> createdChunks = new();

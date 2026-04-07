@@ -14,33 +14,36 @@ public class ChunkGameInitializer
         this.gridSize = gridSize;
     }
 
-    public void SetRandomStartAndEnd()
+    public void SetRandomStart()
     {
         Vector3Int start = new(RandomGen.Range(0, gridSize), RandomGen.Range(0, gridSize), gridSize - 1);
-        Vector3Int end = new(RandomGen.Range(0, gridSize), RandomGen.Range(0, gridSize), 0);
 
         manager.SetChunkType(start, ChunkTypeEnum.Start);
-        manager.SetChunkType(end, ChunkTypeEnum.End);
 
         var startDirs = generator.FindAvailableOpenings(start);
-        var endDirs = generator.FindAvailableOpenings(end);
 
         var startChosen = generator.PickRandomDirections(startDirs, 2, 2);
         SetUpOtherChunks(manager.SetChunkTypesInDirections(start, startChosen, ChunkTypeEnum.Normal));
-
-        var endChosen = generator.PickRandomDirections(endDirs, 1, 1);
-        SetUpOtherChunks(manager.SetChunkTypesInDirections(end, endChosen, ChunkTypeEnum.Normal));
     }
+
 
     void SetUpOtherChunks(List<Vector3Int> newChunks)
     {
+        List<Vector3Int> chunks = new List<Vector3Int>();
+
         foreach (var chunk in newChunks)
         {
             var potentialChunkDirs = generator.FindAvailableOpenings(chunk);
             var chosenDirs = generator.PickRandomDirections(potentialChunkDirs, 1, 4);
 
-            manager.SetChunkTypesInDirections(chunk, chosenDirs, ChunkTypeEnum.Normal);
+            chunks.Add(manager.SetChunkTypesInDirections(chunk, chosenDirs, ChunkTypeEnum.Normal)[0]);
         }
+
+        Vector3Int upHole = manager.SetDownHole(chunks[chunks.Count - 1]);
+
+        var upholeDirs = generator.FindAvailableOpenings(upHole);
+        var upholeChosen = generator.PickRandomDirections(upholeDirs, 2, 3);
+        manager.SetChunkTypesInDirections(upHole, upholeChosen, ChunkTypeEnum.Normal);
 
     }
 
@@ -48,6 +51,5 @@ public class ChunkGameInitializer
     {
         var dirs = generator.FindAvailableOpenings(chunk);
         manager.SetChunkTypesInDirections(chunk, dirs, ChunkTypeEnum.Normal);
-
     }
 }

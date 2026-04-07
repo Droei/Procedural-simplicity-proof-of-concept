@@ -27,7 +27,7 @@ public class PathGenerator : MonoBehaviour
                     chunkManager.SetChunk(new Vector3Int(x, y, z), new Chunk(0, new Vector3Int(x, y, z)));
                 }
 
-        initializer.SetRandomStartAndEnd();
+        initializer.SetRandomStart();
         chunkManager.VisualizeChunks();
     }
 }
