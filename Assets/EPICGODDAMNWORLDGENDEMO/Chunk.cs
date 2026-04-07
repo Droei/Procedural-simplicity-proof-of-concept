@@ -6,7 +6,7 @@ public class Chunk
     public int id;
     public Vector3Int location;
 
-    public List<DirectionEnum> openingDirections;
+    private List<DirectionEnum> openingDirections;
 
     public List<PathDirectionEnum> chunkDirections;
     public ChunkTypeEnum chunkType = ChunkTypeEnum.Nothing;
@@ -18,6 +18,13 @@ public class Chunk
         id = ChunkHelperFunctions.ParseLocationToId(location);
         this.location = location;
     }
+
+    public Chunk SetOpeningDirections(List<DirectionEnum> openingDirections)
+    {
+        this.openingDirections = openingDirections;
+        return this;
+    }
+
 
     public void SetDirections(List<PathDirectionEnum> directions)
     {

@@ -13,7 +13,7 @@ public class ChunkGameInitializer
         this.gridSize = gridSize;
     }
 
-    public void SetRandomStart()
+    public Chunk SetRandomStart()
     {
 
         Vector3Int startLocation = new(RandomGen.Range(0, gridSize), RandomGen.Range(0, gridSize), gridSize - 1);
@@ -24,7 +24,6 @@ public class ChunkGameInitializer
 
         var startChosen = generator.PickRandomDirections(startDirs, 2, 2);
 
-
-        manager.AddEmptyChunksInDirections(startLocation, startChosen);
+        return manager.GetChunkByLocation(startLocation).SetOpeningDirections(startChosen);
     }
 }
