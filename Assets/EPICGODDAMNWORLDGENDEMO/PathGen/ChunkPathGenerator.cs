@@ -21,7 +21,7 @@ public class ChunkPathGenerator
             if (!ChunkHelperFunctions.IsInsideGrid(neighbor))
                 continue;
 
-            if (manager.GetChunkByLocation(neighbor).chunkType == ChunkTypeEnum.Nothing)
+            if (manager.GetChunkByLocation(neighbor).GetChunkType == ChunkTypeEnum.Nothing)
                 available.Add(directionEnum);
         }
 
@@ -43,7 +43,7 @@ public class ChunkPathGenerator
             chosen.Add(available[index]);
             available.RemoveAt(index);
         }
-        ChunkDebugManager.PrintDirections(chosen);
+        //ChunkDebugManager.PrintDirections(chosen);
         return chosen;
     }
 }

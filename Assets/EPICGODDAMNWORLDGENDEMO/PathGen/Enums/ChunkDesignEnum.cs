@@ -1,4 +1,4 @@
-public enum PathDirectionEnum
+public enum ChunkDesignEnum
 {
     OneWay,
     Straight,

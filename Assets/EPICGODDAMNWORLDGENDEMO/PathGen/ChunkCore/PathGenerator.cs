@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PathGenerator : MonoBehaviour
@@ -21,7 +22,15 @@ public class PathGenerator : MonoBehaviour
         initializer = new ChunkGameInitializer(chunkManager, pathGenerator, gridSize);
 
         chunkManager.SetUpEmptyChunks();
-        initializer.SetRandomStart();
+        Chunk start = initializer.SetRandomStart();
+        List<Chunk> newChunks = initializer.GenerateChunksInOpenDirections(start);
+        Chunk upHole = initializer.GenerateChunksInOpenDirectionsWithDownHole(newChunks);
+        newChunks = initializer.GenerateChunksInOpenDirections(upHole);
+        upHole = initializer.GenerateChunksInOpenDirectionsWithDownHole(newChunks);
+        newChunks = initializer.GenerateChunksInOpenDirections(upHole);
+        upHole = initializer.GenerateChunksInOpenDirectionsWithEnding(newChunks);
+
+
         chunkManager.VisualizeChunks();
     }
 }

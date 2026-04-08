@@ -17,10 +17,11 @@ public static class ChunkHelperFunctions
         (Vector3Int.right, DirectionEnum.Right),
     };
 
-    public static int ParseLocationToId(Vector3Int location)
+    public static int ParseLocationToId(Vector3Int loc)
     {
-        return location.x + location.y * gridSize + location.z * gridSize * gridSize;
-
+        return loc.x * gridSize * gridSize
+             + loc.y * gridSize
+             + loc.z;
     }
 
     public static bool IsInsideGrid(Vector3Int pos)

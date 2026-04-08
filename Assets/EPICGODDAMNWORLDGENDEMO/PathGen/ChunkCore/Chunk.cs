@@ -8,8 +8,8 @@ public class Chunk
 
     private List<DirectionEnum> openingDirections;
 
-    public List<PathDirectionEnum> chunkDirections;
-    public ChunkTypeEnum chunkType = ChunkTypeEnum.Nothing;
+    public List<ChunkDesignEnum> chunkDesign;
+    private ChunkTypeEnum chunkType = ChunkTypeEnum.Nothing;
 
     public DirectionEnum directionToOriginChunk;
 
@@ -25,9 +25,21 @@ public class Chunk
         return this;
     }
 
-
-    public void SetDirections(List<PathDirectionEnum> directions)
+    public Chunk SetChunkType(ChunkTypeEnum chunkType)
     {
-        chunkDirections = directions;
+        this.chunkType = chunkType;
+        return this;
+    }
+
+    public ChunkTypeEnum GetChunkType
+        => chunkType;
+
+    public List<DirectionEnum> GetOpeningDirections
+        => openingDirections;
+
+
+    public void SetChunkDesign(List<ChunkDesignEnum> design)
+    {
+        chunkDesign = design;
     }
 }

@@ -17,7 +17,7 @@ public static class ChunkDebugManager
                 for (int x = 0; x < gridSize; x++)
                 {
                     Chunk chunk = chunks[ChunkHelperFunctions.ParseLocationToId(new Vector3Int(x, y, z))];
-                    string symbol = chunk.chunkType switch
+                    string symbol = chunk.GetChunkType switch
                     {
                         ChunkTypeEnum.Start => "<color=red>[S]</color>",
                         ChunkTypeEnum.End => "<color=red>[E]</color>",
