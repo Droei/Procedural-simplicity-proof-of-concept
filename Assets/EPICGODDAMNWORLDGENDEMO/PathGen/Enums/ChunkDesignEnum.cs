@@ -4,5 +4,6 @@ public enum ChunkDesignEnum
     Straight,
     Corner,
     TShape,
-    Cross
+    Cross,
+    None
 }

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ChunkManager
 {
@@ -42,9 +41,12 @@ public class ChunkManager
         return SetChunkTypeByLocation(chunk.location, ChunkTypeEnum.End);
     }
 
-    public void SetChunkDirections(Chunk chunk, List<ChunkDesignEnum> pathDirections)
+    public void SetChunkDirections(Chunk chunk, ChunkDesignEnum pathDirections)
         => chunk.SetChunkDesign(pathDirections);
 
     public void VisualizeChunks()
         => ChunkDebugManager.VisualizeChunks(chunks, gridSize);
+
+    public Chunk[] GetChunks
+        => chunks;
 }

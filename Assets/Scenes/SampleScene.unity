@@ -137,7 +137,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1289571951
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -154,6 +154,30 @@ MonoBehaviour:
   gridSize: 3
   spacing: 1
   chunkPrefab: {fileID: 8750683279002260104, guid: ca324541ca434f444a6828117562cc61, type: 3}
+  pathGenerator: {fileID: 2014427883}
+  chunkTypes:
+  - {fileID: 2256955469506845265, guid: d2775b4e250c83e4ab793a44a34a5a73, type: 3}
+  - {fileID: -5841804879262874980, guid: e25793b6c0ce595498e097a0658aff68, type: 3}
+  - {fileID: 4402273009419731910, guid: 99a432a2bc99b2e41984d1a7c7f18a64, type: 3}
+  - {fileID: 855707860072744585, guid: a593cce308620a841a414d11c21d84fa, type: 3}
+  - {fileID: 855707860072744585, guid: c55fb7e9b45d8e340a8a4475c5315c88, type: 3}
+  - {fileID: -5841804879262874980, guid: 17aa0b1fa276fff489e5f2cc0fed0c76, type: 3}
+  - {fileID: 2256955469506845265, guid: f78da357c8df2804087987950d73b8a4, type: 3}
+  - {fileID: 855707860072744585, guid: b5e67bcc117243f4b8f6fa2f35a25ba1, type: 3}
+  - {fileID: 4402273009419731910, guid: 4bd565a1040150d468a6b779d2a3b73e, type: 3}
+  - {fileID: 855707860072744585, guid: 927d3d8bda4b4d74f88fa9c72ea66f56, type: 3}
+  - {fileID: 4402273009419731910, guid: c039b3fe6ef5914408ce9b44a4ed1f8c, type: 3}
+  - {fileID: 2256955469506845265, guid: a015f51f1dcc5ff4898f27cbe60909eb, type: 3}
+  - {fileID: -5841804879262874980, guid: ec8738a6a6c2c654492e50cf04135e0d, type: 3}
+  - {fileID: 4402273009419731910, guid: 849e80c854c280142aebea9aab3a63b9, type: 3}
+  - {fileID: 855707860072744585, guid: bc1db0d389239bb45bd4620a3dd857f4, type: 3}
+  - {fileID: 4100021843127740239, guid: 2f1aa5f75d9e3de4a9b8f4a250e09c7b, type: 3}
+  - {fileID: 2256955469506845265, guid: 133384be28ccf824e92b7e6b256fcb20, type: 3}
+  - {fileID: -5841804879262874980, guid: 07f82008a052fd140835ab58958b6a44, type: 3}
+  - {fileID: 4402273009419731910, guid: 76cf6b3a98e01584fa633321a07611c2, type: 3}
+  - {fileID: 855707860072744585, guid: 3acb1218f03d1d54a8d14a8807036533, type: 3}
+  - {fileID: 855707860072744585, guid: 7fd459e83f037e8428c271327b2daa80, type: 3}
+  - {fileID: 4402273009419731910, guid: d1c0b92abf9b10743be88480a348f787, type: 3}
 --- !u!23 &1289571952
 MeshRenderer:
   m_ObjectHideFlags: 0

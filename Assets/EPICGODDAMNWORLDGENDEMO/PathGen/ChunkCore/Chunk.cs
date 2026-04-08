@@ -6,12 +6,12 @@ public class Chunk
     public int id;
     public Vector3Int location;
 
-    private List<DirectionEnum> openingDirections;
+    private List<DirectionEnum> openingDirections = new();
 
-    public List<ChunkDesignEnum> chunkDesign;
+    public ChunkDesignEnum chunkDesign;
     private ChunkTypeEnum chunkType = ChunkTypeEnum.Nothing;
 
-    public DirectionEnum directionToOriginChunk;
+    public DirectionEnum directionToOriginChunk = DirectionEnum.None;
 
     public Chunk(Vector3Int location)
     {
@@ -38,8 +38,62 @@ public class Chunk
         => openingDirections;
 
 
-    public void SetChunkDesign(List<ChunkDesignEnum> design)
+    public void SetChunkDesign(ChunkDesignEnum design)
     {
         chunkDesign = design;
+    }
+
+    public ChunkDesignEnum GetChunkDesign
+        => chunkDesign;
+
+    public override string ToString()
+    {
+        string openings = openingDirections != null && openingDirections.Count > 0
+            ? string.Join(", ", openingDirections)
+            : "None";
+
+        return $"Chunk [" +
+               $"ID: {id}, " +
+               $"Loc: ({location.x}, {location.y}, {location.z}), " +
+               $"Type: {chunkType}, " +
+               $"Design: {chunkDesign}, " +
+               $"Openings: [{openings}], " +
+               $"DirToOrigin: {directionToOriginChunk}" +
+               $"]";
+    }
+
+    public Chunk DetermineChunkDesign()
+    {
+        List<DirectionEnum> openings = new(openingDirections);
+
+        if (!openings.Contains(directionToOriginChunk) && directionToOriginChunk != DirectionEnum.None)
+            openings.Add(directionToOriginChunk);
+
+        if (openingDirections != null && openingDirections.Count > 0)
+        {
+            int count = openings.Count;
+
+            chunkDesign = count switch
+            {
+                0 => ChunkDesignEnum.None,
+
+                1 => ChunkDesignEnum.OneWay,
+
+                2 => ChunkHelperFunctions.GetOpposite(openings[0]) == openings[1]
+                        ? ChunkDesignEnum.Straight
+                        : ChunkDesignEnum.Corner,
+
+                3 => ChunkDesignEnum.TShape,
+
+                4 => ChunkDesignEnum.Cross,
+
+                _ => ChunkDesignEnum.None,
+            };
+        }
+        else
+        {
+            chunkDesign = ChunkDesignEnum.None;
+        }
+        return this;
     }
 }

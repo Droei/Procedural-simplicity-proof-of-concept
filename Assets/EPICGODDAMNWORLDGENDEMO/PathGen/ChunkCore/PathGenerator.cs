@@ -12,7 +12,7 @@ public class PathGenerator : MonoBehaviour
     ChunkPathGenerator pathGenerator;
     ChunkGameInitializer initializer;
 
-    private void Start()
+    private void Awake()
     {
         if (debugMode)
             RandomGen.SetSeed(seed);
@@ -33,4 +33,7 @@ public class PathGenerator : MonoBehaviour
 
         chunkManager.VisualizeChunks();
     }
+
+    public ChunkManager GetChunkManager
+        => chunkManager;
 }

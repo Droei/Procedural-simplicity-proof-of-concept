@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class VoxelTest : MonoBehaviour
 {
@@ -8,8 +9,15 @@ public class VoxelTest : MonoBehaviour
 
     public GameObject chunkPrefab;
 
+    [SerializeField] PathGenerator pathGenerator;
+
+    [SerializeField] List<ChunkType> chunkTypes;
+
+    ChunkManager chunkManager;
     void Start()
     {
+        chunkManager = pathGenerator.GetChunkManager;
+
         GenerateOuterShell();
         GenerateChunkGrid();
     }
@@ -43,20 +51,67 @@ public class VoxelTest : MonoBehaviour
             for (int cy = 0; cy < gridSize; cy++)
                 for (int cz = 0; cz < gridSize; cz++)
                 {
-                    InstantiateChunk(new Vector3Int(cx, cy, cz));
+                    Debug.Log(chunkManager.GetChunkByLocation(new(cx, cy, cz)).DetermineChunkDesign().ToString());
+
+                    Chunk chunk = chunkManager.GetChunkByLocation(new(cx, cy, cz))
+                                                .DetermineChunkDesign();
+
+                    ChunkTypeEnum chunkType = chunk.GetChunkType;
+                    ChunkDesignEnum chunkDesign = chunk.GetChunkDesign;
+
+                    var openings = new HashSet<DirectionEnum>(chunk.GetOpeningDirections);
+                    openings.Add(chunk.directionToOriginChunk);
+
+                    ChunkType match = FindMatchingChunk(chunkType, chunkDesign, openings);
+
+                    if (match != null)
+                    {
+                        InstantiateChunk(new(cx, cy, cz), match);
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"No matching chunk for {chunk}");
+                    }
                 }
     }
 
-    void InstantiateChunk(Vector3Int coord)
+    private ChunkType FindMatchingChunk(
+        ChunkTypeEnum type,
+        ChunkDesignEnum design,
+        HashSet<DirectionEnum> requiredOpenings)
     {
-        GameObject chunk = Instantiate(chunkPrefab, transform);
+        foreach (var chunkType in chunkTypes)
+        {
+            // Match type
+            if (chunkType.GetType != type)
+                continue;
+
+            // Match design
+            if (chunkType.GetDesign != design)
+                continue;
+
+            if (type == ChunkTypeEnum.Nothing && design == ChunkDesignEnum.None)
+                return chunkType;
+
+            var prefabOpenings = new HashSet<DirectionEnum>(chunkType.GetOpenings);
+
+            if (prefabOpenings.SetEquals(requiredOpenings))
+                return chunkType;
+        }
+
+        return null;
+    }
+
+    void InstantiateChunk(Vector3Int coord, ChunkType c)
+    {
+        GameObject chunk = Instantiate(c.gameObject, transform);
 
         chunk.name = $"Chunk {coord}";
 
         chunk.transform.position = new Vector3(
             coord.x * chunkSize * spacing,
-            coord.y * chunkSize * spacing,
-            coord.z * chunkSize * spacing
+            coord.z * chunkSize * spacing,
+            coord.y * chunkSize * spacing
         );
     }
 
