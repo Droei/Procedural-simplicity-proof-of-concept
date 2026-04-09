@@ -82062,7 +82062,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ChunkType
   chunkDesign: 3
   chunkType: 0
-  openings: 000000000200000003000000
+  openings: 000000000200000001000000
 --- !u!1 &8767749796153986798
 GameObject:
   m_ObjectHideFlags: 0

@@ -60,7 +60,9 @@ public class VoxelTest : MonoBehaviour
                     ChunkDesignEnum chunkDesign = chunk.GetChunkDesign;
 
                     var openings = new HashSet<DirectionEnum>(chunk.GetOpeningDirections);
-                    openings.Add(chunk.directionToOriginChunk);
+
+                    if (chunk.directionToOriginChunk != DirectionEnum.None)
+                        openings.Add(chunk.directionToOriginChunk);
 
                     ChunkType match = FindMatchingChunk(chunkType, chunkDesign, openings);
 
@@ -75,23 +77,18 @@ public class VoxelTest : MonoBehaviour
                 }
     }
 
-    private ChunkType FindMatchingChunk(
-        ChunkTypeEnum type,
-        ChunkDesignEnum design,
-        HashSet<DirectionEnum> requiredOpenings)
+    private ChunkType FindMatchingChunk(ChunkTypeEnum type, ChunkDesignEnum design, HashSet<DirectionEnum> requiredOpenings)
     {
         foreach (var chunkType in chunkTypes)
         {
-            // Match type
+            if (type == ChunkTypeEnum.Nothing || design == ChunkDesignEnum.None)
+                return chunkType;
+
             if (chunkType.GetType != type)
                 continue;
 
-            // Match design
             if (chunkType.GetDesign != design)
                 continue;
-
-            if (type == ChunkTypeEnum.Nothing && design == ChunkDesignEnum.None)
-                return chunkType;
 
             var prefabOpenings = new HashSet<DirectionEnum>(chunkType.GetOpenings);
 

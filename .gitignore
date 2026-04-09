@@ -89,3 +89,46 @@ TestResults/
 
 # ========== CLOUD BUILDS ==========
 UnityCloudBuild/
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# User-specific files
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries
+.idea/**/shelf
+
+# Generated files
+out/
+target/
+build/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Gradle
+.gradle/
+build/
+
+# Maven
+target/
+
+# Java
+*.class
+
+# Kotlin
+*.kotlin_module
+
+# Misc
+*.jar
+*.war
+*.ear
