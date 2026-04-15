@@ -17,22 +17,24 @@ public class ChunkGameInitializer
 
     public Chunk SetRandomStart()
     {
-        Vector3Int startLocation = new(
-            RandomGen.Range(0, gridSize),
-            RandomGen.Range(0, gridSize),
-            gridSize - 1
-        );
-
+        Vector3Int startLocation = new(RandomGen.Range(0, gridSize), RandomGen.Range(0, gridSize), gridSize - 1);
         Chunk startChunk = manager.SetChunkTypeByLocation(startLocation, ChunkTypeEnum.Start);
 
-        SetupOpenings(startChunk, 2, 2, false);
-
-        Debug.Log(startChunk.DetermineChunkDesign().ToString());
+        SetupStartChunk(startChunk, 2, 2);
 
         return startChunk;
     }
 
-    public List<Chunk> GenerateFloor(Chunk startChunk, int cycles)
+    public Chunk SetupStartChunk(Chunk chunk, int min, int max)
+    {
+        SetupOpenings(chunk, min, max, false);
+
+        Debug.Log(chunk.DetermineChunkDesign().ToString());
+
+        return chunk;
+    }
+
+    public Chunk GenerateFloor(Chunk startChunk, int cycles)
     {
         List<Chunk> current = new() { startChunk };
 
@@ -42,21 +44,20 @@ public class ChunkGameInitializer
             current = CreateAttachedChunks(current, isLastCycle);
         }
 
-        if (current.Count > 0)
-        {
-            Chunk chosen = current[RandomGen.Range(0, current.Count)];
-            Chunk upChunk = manager.SetDownHole(chosen);
+        Chunk chosen = current[RandomGen.Range(0, current.Count)];
 
-            List<DirectionEnum> incoming = new();
-            List<DirectionEnum> blocked = new();
+        Chunk endChunk = null;
 
-            manager.EvaluateNeighbors(upChunk.location, incoming, blocked);
-            upChunk.SetOpeningDirections(incoming);
-        }
+        if (chosen.location.z != 0)
+            endChunk = manager.SetDownHole(chosen);
+        else
+            endChunk = manager.SetEndingChunk(chosen);
 
+
+        SetupOpenings(endChunk, 1, 3, false);
+        Debug.Log(endChunk.DetermineChunkDesign().ToString());
         FinalizeAllChunks();
-
-        return current;
+        return endChunk;
     }
 
     private List<Chunk> CreateAttachedChunks(List<Chunk> chunks, bool isFinalCycle)
@@ -76,7 +77,7 @@ public class ChunkGameInitializer
 
                 newChunk.SetChunkType(ChunkTypeEnum.Normal);
 
-                SetupOpenings(newChunk, 1, 3, isFinalCycle);
+                SetupOpenings(newChunk, 1, 2, isFinalCycle);
 
                 Debug.Log(newChunk.DetermineChunkDesign().ToString());
 

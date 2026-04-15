@@ -60062,7 +60062,7 @@ GameObject:
   - component: {fileID: 8622017560453621220}
   - component: {fileID: 855707860072744585}
   m_Layer: 0
-  m_Name: T - Up Right Left
+  m_Name: Cross - Up Right Left Down
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -60665,7 +60665,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ChunkType
   chunkDesign: 4
   chunkType: 0
-  openings: 03000000000000000200000003000000
+  openings: 03000000000000000200000001000000
 --- !u!1 &8767749796153986798
 GameObject:
   m_ObjectHideFlags: 0

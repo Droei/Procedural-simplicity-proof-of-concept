@@ -1,0 +1,5 @@
+name: Spelunky3D
+version: 1.0
+main: com.saan.spelunky3D.spelunky3D
+api-version: 1.21
+author: YourName

@@ -15,6 +15,12 @@ public class PathGenerator : MonoBehaviour
     {
         if (debugMode)
             RandomGen.SetSeed(seed);
+        else
+        {
+            int randomSeed = RandomGen.Range(0, 9999999);
+            RandomGen.SetSeed(seed);
+            Debug.Log("Using: " + randomSeed);
+        }
 
         ChunkHelperFunctions.SetGridSize(gridSize);
 
@@ -23,19 +29,17 @@ public class PathGenerator : MonoBehaviour
         initializer = new ChunkGameInitializer(chunkManager, pathGenerator, gridSize);
 
         chunkManager.SetUpEmptyChunks();
+
         Chunk start = initializer.SetRandomStart();
-        initializer.GenerateFloor(start, 3);
 
-        //List<Chunk> newChunks = initializer.GenerateChunksInOpenDirections(start);
+        Chunk floorChunk = start;
 
-
-
-        //Chunk upHole = initializer.GenerateChunksInOpenDirectionsWithDownHole(newChunks);
-        //newChunks = initializer.GenerateChunksInOpenDirections(upHole);
-        //upHole = initializer.GenerateChunksInOpenDirectionsWithDownHole(newChunks);
-        //newChunks = initializer.GenerateChunksInOpenDirections(upHole);
-        //upHole = initializer.GenerateChunksInOpenDirectionsWithEnding(newChunks);
-
+        for (int i = 0; i < gridSize; i++)
+        {
+            Chunk upChunk = initializer.GenerateFloor(floorChunk, gridSize - 1);
+            floorChunk = upChunk;
+            initializer.SetupStartChunk(floorChunk, 1, 3);
+        }
 
         chunkManager.VisualizeChunks();
     }

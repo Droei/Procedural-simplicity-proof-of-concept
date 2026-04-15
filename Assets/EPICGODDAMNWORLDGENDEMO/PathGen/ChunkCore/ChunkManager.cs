@@ -31,7 +31,8 @@ public class ChunkManager
     public Chunk SetDownHole(Chunk chunk)
     {
         SetChunkTypeByLocation(chunk.location, ChunkTypeEnum.HoleDown);
-        return SetChunkTypeByLocation(new(chunk.location.x, chunk.location.y, chunk.location.z - 1), ChunkTypeEnum.HoleUp);
+        Chunk upHole = SetChunkTypeByLocation(new(chunk.location.x, chunk.location.y, chunk.location.z - 1), ChunkTypeEnum.HoleUp);
+        return upHole;
     }
 
     public Chunk SetEndingChunk(Chunk chunk)
