@@ -49,8 +49,6 @@ public class VoxelTest : MonoBehaviour
             for (int cy = 0; cy < gridSize; cy++)
                 for (int cz = 0; cz < gridSize; cz++)
                 {
-                    Debug.Log(chunkManager.GetChunkByLocation(new(cx, cy, cz)).DetermineChunkDesign().ToString());
-
                     Chunk chunk = chunkManager.GetChunkByLocation(new(cx, cy, cz))
                                                 .DetermineChunkDesign();
 

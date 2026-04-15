@@ -1,9 +1,8 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PathGenerator : MonoBehaviour
 {
-    [SerializeField] int gridSize = 3;
+    [SerializeField] int gridSize = 4;
 
     [SerializeField] bool debugMode = false;
     [SerializeField] int seed = 0;
@@ -17,14 +16,17 @@ public class PathGenerator : MonoBehaviour
         if (debugMode)
             RandomGen.SetSeed(seed);
 
+        ChunkHelperFunctions.SetGridSize(gridSize);
+
         chunkManager = new ChunkManager(gridSize);
         pathGenerator = new ChunkPathGenerator(chunkManager);
         initializer = new ChunkGameInitializer(chunkManager, pathGenerator, gridSize);
 
         chunkManager.SetUpEmptyChunks();
         Chunk start = initializer.SetRandomStart();
-        List<Chunk> newChunks = initializer.GenerateChunksInOpenDirections(start);
+        initializer.GenerateFloor(start, 3);
 
+        //List<Chunk> newChunks = initializer.GenerateChunksInOpenDirections(start);
 
 
 

@@ -48,52 +48,29 @@ public class ChunkManager
     public Chunk[] GetChunks
         => chunks;
 
-    public Chunk[] GetNeighborChunksThroughLocation(Vector3Int location)
+    public void EvaluateNeighbors(Vector3Int location, List<DirectionEnum> incoming, List<DirectionEnum> blocked)
     {
-        var neighbors = new List<Chunk>();
-
-        foreach (var (dir, _) in ChunkHelperFunctions.directions)
-        {
-            Vector3Int neighborLocation = location + dir;
-
-            if (!ChunkHelperFunctions.IsInsideGrid(neighborLocation))
-                continue;
-
-            var neighbor = GetChunkByLocation(neighborLocation);
-
-            if (neighbor.GetChunkType == ChunkTypeEnum.Nothing)
-                continue;
-
-            neighbors.Add(neighbor);
-        }
-
-        return neighbors.ToArray();
-    }
-
-    public List<DirectionEnum> GetIncomingConnections(Vector3Int location)
-    {
-        var result = new List<DirectionEnum>();
-
         foreach (var (dir, directionEnum) in ChunkHelperFunctions.directions)
         {
             Vector3Int neighborLocation = location + dir;
 
             if (!ChunkHelperFunctions.IsInsideGrid(neighborLocation))
+            {
+                blocked.Add(directionEnum);
                 continue;
+            }
 
             var neighbor = GetChunkByLocation(neighborLocation);
 
             if (neighbor.GetChunkType == ChunkTypeEnum.Nothing)
                 continue;
 
-            DirectionEnum oppositeDir = ChunkHelperFunctions.GetOpposite(directionEnum);
+            var opposite = ChunkHelperFunctions.GetOpposite(directionEnum);
 
-            if (neighbor.GetOpeningDirections.Contains(oppositeDir))
-            {
-                result.Add(directionEnum);
-            }
+            if (neighbor.GetOpeningDirections.Contains(opposite))
+                incoming.Add(directionEnum);
+            else
+                blocked.Add(directionEnum);
         }
-
-        return result;
     }
 }

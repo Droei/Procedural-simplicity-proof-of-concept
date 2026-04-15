@@ -14,9 +14,6 @@ public class ChunkPathGenerator
     {
         List<DirectionEnum> available = new();
 
-        // Debug.Log("Chunk " + location + "has: " + manager.GetNeighborChunksThroughLocation(location).Length);
-
-
         foreach (var (dir, directionEnum) in ChunkHelperFunctions.directions)
         {
             Vector3Int neighbor = location + dir;

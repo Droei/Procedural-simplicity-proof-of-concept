@@ -17,67 +17,112 @@ public class ChunkGameInitializer
 
     public Chunk SetRandomStart()
     {
+        Vector3Int startLocation = new(
+            RandomGen.Range(0, gridSize),
+            RandomGen.Range(0, gridSize),
+            gridSize - 1
+        );
 
-        Vector3Int startLocation = new(RandomGen.Range(0, gridSize), RandomGen.Range(0, gridSize), gridSize - 1);
+        Chunk startChunk = manager.SetChunkTypeByLocation(startLocation, ChunkTypeEnum.Start);
 
-        manager.SetChunkTypeByLocation(startLocation, ChunkTypeEnum.Start);
+        SetupOpenings(startChunk, 2, 2, false);
 
-        List<DirectionEnum> startDirs = generator.FindAvailableOpenings(startLocation);
-        List<DirectionEnum> startChosen = generator.PickRandomDirections(startDirs, 2, 2);
+        Debug.Log(startChunk.DetermineChunkDesign().ToString());
 
-        return manager.GetChunkByLocation(startLocation).SetOpeningDirections(startChosen);
+        return startChunk;
     }
 
-    public List<Chunk> GenerateChunksInOpenDirections(Chunk chunk)
-        => GenerateChunksInOpenDirections(new List<Chunk>() { chunk });
-
-
-    public List<Chunk> GenerateChunksInOpenDirections(List<Chunk> chunks)
+    public List<Chunk> GenerateFloor(Chunk startChunk, int cycles)
     {
-        return CreateAttachedChunks(chunks);
+        List<Chunk> current = new() { startChunk };
+
+        for (int i = 0; i < cycles; i++)
+        {
+            bool isLastCycle = i == cycles - 1;
+            current = CreateAttachedChunks(current, isLastCycle);
+        }
+
+        if (current.Count > 0)
+        {
+            Chunk chosen = current[RandomGen.Range(0, current.Count)];
+            Chunk upChunk = manager.SetDownHole(chosen);
+
+            List<DirectionEnum> incoming = new();
+            List<DirectionEnum> blocked = new();
+
+            manager.EvaluateNeighbors(upChunk.location, incoming, blocked);
+            upChunk.SetOpeningDirections(incoming);
+        }
+
+        FinalizeAllChunks();
+
+        return current;
     }
 
-
-    public Chunk GenerateChunksInOpenDirectionsWithDownHole(List<Chunk> chunks)
-    {
-        List<Chunk> latestChunks = CreateAttachedChunks(chunks);
-        Chunk downChunk = latestChunks[RandomGen.Range(0, latestChunks.Count)];
-        Chunk upChunk = manager.SetDownHole(downChunk);
-        upChunk.SetOpeningDirections(generator.PickRandomDirections(generator.FindAvailableOpenings(upChunk.location), 2, 4));
-        return upChunk;
-    }
-
-    public Chunk GenerateChunksInOpenDirectionsWithEnding(List<Chunk> chunks)
-    {
-        List<Chunk> latestChunks = CreateAttachedChunks(chunks);
-        return manager.SetEndingChunk(latestChunks[RandomGen.Range(0, latestChunks.Count)]);
-    }
-
-    private List<Chunk> CreateAttachedChunks(List<Chunk> chunks)
+    private List<Chunk> CreateAttachedChunks(List<Chunk> chunks, bool isFinalCycle)
     {
         List<Chunk> newChunks = new();
 
         foreach (var chunk in chunks)
         {
-            //Debug.Log("Chunk " + chunk.location + "has: " + manager.GetNeighborChunksThroughLocation(chunk.location).Length);
-
             foreach (var direction in chunk.GetOpeningDirections)
             {
-                Vector3Int offset = ChunkHelperFunctions.DirectionToVector(direction);
-                Vector3Int target = chunk.location + offset;
+                Vector3Int target = chunk.location + ChunkHelperFunctions.DirectionToVector(direction);
 
                 Chunk newChunk = manager.GetChunkByLocation(target);
+
+                if (newChunk.GetChunkType != ChunkTypeEnum.Nothing)
+                    continue;
+
                 newChunk.SetChunkType(ChunkTypeEnum.Normal);
 
-                var openings = generator.PickRandomDirections(generator.FindAvailableOpenings(target), 1, 3);
-                var incoming = manager.GetIncomingConnections(newChunk.location);
+                SetupOpenings(newChunk, 1, 3, isFinalCycle);
 
-                openings.AddRange(incoming.Where(dir => !openings.Contains(dir)));
-                newChunk.SetOpeningDirections(openings);
+                Debug.Log(newChunk.DetermineChunkDesign().ToString());
 
                 newChunks.Add(newChunk);
             }
         }
+
         return newChunks;
+    }
+
+    private void SetupOpenings(Chunk chunk, int min, int max, bool isFinalCycle)
+    {
+        List<DirectionEnum> incoming = new();
+        List<DirectionEnum> blocked = new();
+
+        manager.EvaluateNeighbors(chunk.location, incoming, blocked);
+
+        if (isFinalCycle)
+        {
+            chunk.SetOpeningDirections(incoming);
+            return;
+        }
+
+        List<DirectionEnum> directions = generator
+            .PickRandomDirections(generator.FindAvailableOpenings(chunk.location), min, max);
+
+        directions.AddRange(incoming.Where(dir => !directions.Contains(dir)));
+
+        directions.RemoveAll(dir => blocked.Contains(dir));
+
+        chunk.SetOpeningDirections(directions);
+    }
+
+    private void FinalizeAllChunks()
+    {
+        foreach (var chunk in manager.GetChunks)
+        {
+            if (chunk.GetChunkType == ChunkTypeEnum.Nothing)
+                continue;
+
+            List<DirectionEnum> incoming = new();
+            List<DirectionEnum> blocked = new();
+
+            manager.EvaluateNeighbors(chunk.location, incoming, blocked);
+
+            chunk.SetOpeningDirections(incoming);
+        }
     }
 }
