@@ -5,10 +5,10 @@ using UnityEngine;
 public class ChunkGameInitializer
 {
     private ChunkManager manager;
-    private ChunkPathGenerator generator;
+    private ChunkOpeningGenerator generator;
     private int gridSize;
 
-    public ChunkGameInitializer(ChunkManager manager, ChunkPathGenerator generator, int gridSize)
+    public ChunkGameInitializer(ChunkManager manager, ChunkOpeningGenerator generator, int gridSize)
     {
         this.manager = manager;
         this.generator = generator;

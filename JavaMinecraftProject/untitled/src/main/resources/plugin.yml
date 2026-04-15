@@ -1,5 +1,9 @@
 name: Spelunky3D
 version: 1.0
-main: com.saan.spelunky3D.spelunky3D
+main: com.daan.spelunky3D.Spelunky3D
 api-version: 1.21
-author: YourName
+author: Daan
+
+commands:
+  test:
+    description: Test command

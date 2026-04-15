@@ -8,7 +8,7 @@ public class PathGenerator : MonoBehaviour
     [SerializeField] int seed = 0;
 
     ChunkManager chunkManager;
-    ChunkPathGenerator pathGenerator;
+    ChunkOpeningGenerator pathGenerator;
     ChunkGameInitializer initializer;
 
     private void Awake()
@@ -25,7 +25,7 @@ public class PathGenerator : MonoBehaviour
         ChunkHelperFunctions.SetGridSize(gridSize);
 
         chunkManager = new ChunkManager(gridSize);
-        pathGenerator = new ChunkPathGenerator(chunkManager);
+        pathGenerator = new ChunkOpeningGenerator(chunkManager);
         initializer = new ChunkGameInitializer(chunkManager, pathGenerator, gridSize);
 
         chunkManager.SetUpEmptyChunks();

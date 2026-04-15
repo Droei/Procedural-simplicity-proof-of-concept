@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.example</groupId>
-    <artifactId>untitled</artifactId>
+    <artifactId>Spelunky3D</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -32,20 +32,26 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
+                <version>3.1.0</version>
+
                 <executions>
                     <execution>
                         <phase>package</phase>
-                        <configuration>
-                            <tasks>
-                                <copy file="${project.build.directory}/${project.build.finalName}.jar"
-                                      todir="C:/Users/Daan/Desktop/Spelunky3DTestServer/plugins"
-                                      overwrite="true"/>
-                            </tasks>
-                        </configuration>
+
                         <goals>
                             <goal>run</goal>
                         </goals>
+
+                        <configuration>
+                            <target>
+                                <copy file="${project.build.directory}/${project.build.finalName}.jar"
+                                      todir="C:/Users/Daan/Desktop/Spelunky3DTestServer/plugins"
+                                      overwrite="true"/>
+                            </target>
+                        </configuration>
+
                     </execution>
                 </executions>
             </plugin>

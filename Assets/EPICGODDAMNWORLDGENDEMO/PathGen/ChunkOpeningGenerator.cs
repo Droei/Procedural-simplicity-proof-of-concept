@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class ChunkPathGenerator
+public class ChunkOpeningGenerator
 {
     private ChunkManager manager;
 
-    public ChunkPathGenerator(ChunkManager manager)
+    public ChunkOpeningGenerator(ChunkManager manager)
     {
         this.manager = manager;
     }
