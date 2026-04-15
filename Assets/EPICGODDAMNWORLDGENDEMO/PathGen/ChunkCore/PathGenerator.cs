@@ -24,11 +24,15 @@ public class PathGenerator : MonoBehaviour
         chunkManager.SetUpEmptyChunks();
         Chunk start = initializer.SetRandomStart();
         List<Chunk> newChunks = initializer.GenerateChunksInOpenDirections(start);
-        Chunk upHole = initializer.GenerateChunksInOpenDirectionsWithDownHole(newChunks);
-        newChunks = initializer.GenerateChunksInOpenDirections(upHole);
-        upHole = initializer.GenerateChunksInOpenDirectionsWithDownHole(newChunks);
-        newChunks = initializer.GenerateChunksInOpenDirections(upHole);
-        upHole = initializer.GenerateChunksInOpenDirectionsWithEnding(newChunks);
+
+
+
+
+        //Chunk upHole = initializer.GenerateChunksInOpenDirectionsWithDownHole(newChunks);
+        //newChunks = initializer.GenerateChunksInOpenDirections(upHole);
+        //upHole = initializer.GenerateChunksInOpenDirectionsWithDownHole(newChunks);
+        //newChunks = initializer.GenerateChunksInOpenDirections(upHole);
+        //upHole = initializer.GenerateChunksInOpenDirectionsWithEnding(newChunks);
 
 
         chunkManager.VisualizeChunks();
@@ -36,4 +40,6 @@ public class PathGenerator : MonoBehaviour
 
     public ChunkManager GetChunkManager
         => chunkManager;
+    public int GetGridSize
+        => gridSize;
 }

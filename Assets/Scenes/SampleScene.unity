@@ -151,9 +151,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VoxelTest
   chunkSize: 16
-  gridSize: 3
   spacing: 1
-  chunkPrefab: {fileID: 8750683279002260104, guid: ca324541ca434f444a6828117562cc61, type: 3}
   pathGenerator: {fileID: 2014427883}
   chunkTypes:
   - {fileID: 2256955469506845265, guid: d2775b4e250c83e4ab793a44a34a5a73, type: 3}
@@ -178,6 +176,35 @@ MonoBehaviour:
   - {fileID: 855707860072744585, guid: 3acb1218f03d1d54a8d14a8807036533, type: 3}
   - {fileID: 855707860072744585, guid: 7fd459e83f037e8428c271327b2daa80, type: 3}
   - {fileID: 4402273009419731910, guid: d1c0b92abf9b10743be88480a348f787, type: 3}
+  - {fileID: 2256955469506845265, guid: aaee2a2742ea3bc4eb26ea7eecb657d5, type: 3}
+  - {fileID: -5841804879262874980, guid: 819426a316cd37642b0e4cb2450f5c2f, type: 3}
+  - {fileID: 4402273009419731910, guid: 17a82e61823144e479292164ee93c048, type: 3}
+  - {fileID: 855707860072744585, guid: a5ab10f978031f64795c5a4035821827, type: 3}
+  - {fileID: 855707860072744585, guid: e8ee513686a30424fbade097c61b0737, type: 3}
+  - {fileID: -5841804879262874980, guid: 92d6fcce079fe3c4f9c7380b6e458990, type: 3}
+  - {fileID: 2256955469506845265, guid: 0dc2df84dd05cb84dbbf2f043f4fe654, type: 3}
+  - {fileID: 855707860072744585, guid: f700b47a69610294b98e136754f1671d, type: 3}
+  - {fileID: 4402273009419731910, guid: 119b853243a138b49952ca2b1b7cb231, type: 3}
+  - {fileID: 4402273009419731910, guid: 0af75af5ed132b6418490967765a0cfa, type: 3}
+  - {fileID: 2256955469506845265, guid: b3c8268053455f04d945ff13c1c139c6, type: 3}
+  - {fileID: -5841804879262874980, guid: 3df327afc79b2c34e8a0527b932e8e06, type: 3}
+  - {fileID: 4402273009419731910, guid: 8488d43fae82e2249bcfdc87b0c6401a, type: 3}
+  - {fileID: 855707860072744585, guid: 90a9fc0c30ad90f419e6d2ca27ddf41a, type: 3}
+  - {fileID: 2256955469506845265, guid: cb064089519e3564995dde312ab7d3f1, type: 3}
+  - {fileID: -5841804879262874980, guid: 6ff2214b5ca948447aefb8fe1f71d8cd, type: 3}
+  - {fileID: 4402273009419731910, guid: 8f8048823e96f7346bd1fd3897df0376, type: 3}
+  - {fileID: 855707860072744585, guid: 8d06d83845de1804a90acf44a34389a2, type: 3}
+  - {fileID: 855707860072744585, guid: a9168359708d8684ea70893bad54c6d5, type: 3}
+  - {fileID: 4402273009419731910, guid: bbc3a445e4c6f0240a8d532b0071489f, type: 3}
+  - {fileID: -5841804879262874980, guid: 401d4c21a93b15d4e962549b433e7cdf, type: 3}
+  - {fileID: 2256955469506845265, guid: b7bac6321d2fd3f40bb69c2b35db1952, type: 3}
+  - {fileID: 855707860072744585, guid: ef1e9fb43b7787a4db0660954c0f768e, type: 3}
+  - {fileID: 4402273009419731910, guid: 812a4f89a749fd645a88e45b839ffc81, type: 3}
+  - {fileID: 855707860072744585, guid: 6b22d5eeabf1c974ea54f19c1146194b, type: 3}
+  - {fileID: 2256955469506845265, guid: 0e0d8368d7b66e44985af379ce0b207d, type: 3}
+  - {fileID: -5841804879262874980, guid: 808db2f158a52e54e9b91bd4a52697fd, type: 3}
+  - {fileID: 4402273009419731910, guid: aa4dc687db1f37748a3bd0ae21d39daf, type: 3}
+  - {fileID: 855707860072744585, guid: 1f4d1d609107f0d4396b27dc290bbc75, type: 3}
 --- !u!23 &1289571952
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -279,7 +306,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PathGenerator
   gridSize: 3
-  debugMode: 1
+  debugMode: 0
   seed: 10
 --- !u!4 &2014427884
 Transform:

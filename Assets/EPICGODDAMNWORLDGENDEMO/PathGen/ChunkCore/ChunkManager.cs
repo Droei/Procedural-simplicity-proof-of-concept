@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class ChunkManager
 {
@@ -27,9 +28,6 @@ public class ChunkManager
     public Chunk SetChunkTypeByLocation(Vector3Int location, ChunkTypeEnum type)
         => GetChunkByLocation(location).SetChunkType(type);
 
-    public DirectionEnum GetChunkDirectionToOrigin(Vector3Int location)
-        => GetChunkByLocation(location).directionToOriginChunk;
-
     public Chunk SetDownHole(Chunk chunk)
     {
         SetChunkTypeByLocation(chunk.location, ChunkTypeEnum.HoleDown);
@@ -49,4 +47,53 @@ public class ChunkManager
 
     public Chunk[] GetChunks
         => chunks;
+
+    public Chunk[] GetNeighborChunksThroughLocation(Vector3Int location)
+    {
+        var neighbors = new List<Chunk>();
+
+        foreach (var (dir, _) in ChunkHelperFunctions.directions)
+        {
+            Vector3Int neighborLocation = location + dir;
+
+            if (!ChunkHelperFunctions.IsInsideGrid(neighborLocation))
+                continue;
+
+            var neighbor = GetChunkByLocation(neighborLocation);
+
+            if (neighbor.GetChunkType == ChunkTypeEnum.Nothing)
+                continue;
+
+            neighbors.Add(neighbor);
+        }
+
+        return neighbors.ToArray();
+    }
+
+    public List<DirectionEnum> GetIncomingConnections(Vector3Int location)
+    {
+        var result = new List<DirectionEnum>();
+
+        foreach (var (dir, directionEnum) in ChunkHelperFunctions.directions)
+        {
+            Vector3Int neighborLocation = location + dir;
+
+            if (!ChunkHelperFunctions.IsInsideGrid(neighborLocation))
+                continue;
+
+            var neighbor = GetChunkByLocation(neighborLocation);
+
+            if (neighbor.GetChunkType == ChunkTypeEnum.Nothing)
+                continue;
+
+            DirectionEnum oppositeDir = ChunkHelperFunctions.GetOpposite(directionEnum);
+
+            if (neighbor.GetOpeningDirections.Contains(oppositeDir))
+            {
+                result.Add(directionEnum);
+            }
+        }
+
+        return result;
+    }
 }

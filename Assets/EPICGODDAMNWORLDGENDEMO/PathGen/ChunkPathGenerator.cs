@@ -14,6 +14,9 @@ public class ChunkPathGenerator
     {
         List<DirectionEnum> available = new();
 
+        // Debug.Log("Chunk " + location + "has: " + manager.GetNeighborChunksThroughLocation(location).Length);
+
+
         foreach (var (dir, directionEnum) in ChunkHelperFunctions.directions)
         {
             Vector3Int neighbor = location + dir;
@@ -36,6 +39,7 @@ public class ChunkPathGenerator
         int amount = RandomGen.Range(minPossible, maxPossible + 1);
 
         List<DirectionEnum> chosen = new();
+
 
         for (int i = 0; i < amount; i++)
         {

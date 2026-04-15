@@ -4,10 +4,8 @@ using UnityEngine;
 public class VoxelTest : MonoBehaviour
 {
     public int chunkSize = 16;
-    public int gridSize = 3;
+    int gridSize = 3;
     public float spacing = 1f;
-
-    public GameObject chunkPrefab;
 
     [SerializeField] PathGenerator pathGenerator;
 
@@ -17,7 +15,7 @@ public class VoxelTest : MonoBehaviour
     void Start()
     {
         chunkManager = pathGenerator.GetChunkManager;
-
+        gridSize = pathGenerator.GetGridSize;
         GenerateOuterShell();
         GenerateChunkGrid();
     }
@@ -60,9 +58,6 @@ public class VoxelTest : MonoBehaviour
                     ChunkDesignEnum chunkDesign = chunk.GetChunkDesign;
 
                     var openings = new HashSet<DirectionEnum>(chunk.GetOpeningDirections);
-
-                    if (chunk.directionToOriginChunk != DirectionEnum.None)
-                        openings.Add(chunk.directionToOriginChunk);
 
                     ChunkType match = FindMatchingChunk(chunkType, chunkDesign, openings);
 

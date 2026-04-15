@@ -11,8 +11,6 @@ public class Chunk
     public ChunkDesignEnum chunkDesign;
     private ChunkTypeEnum chunkType = ChunkTypeEnum.Nothing;
 
-    public DirectionEnum directionToOriginChunk = DirectionEnum.None;
-
     public Chunk(Vector3Int location)
     {
         id = ChunkHelperFunctions.ParseLocationToId(location);
@@ -57,17 +55,13 @@ public class Chunk
                $"Loc: ({location.x}, {location.y}, {location.z}), " +
                $"Type: {chunkType}, " +
                $"Design: {chunkDesign}, " +
-               $"Openings: [{openings}], " +
-               $"DirToOrigin: {directionToOriginChunk}" +
+               $"Openings: [{openings}]" +
                $"]";
     }
 
     public Chunk DetermineChunkDesign()
     {
         List<DirectionEnum> openings = new(openingDirections);
-
-        if (!openings.Contains(directionToOriginChunk) && directionToOriginChunk != DirectionEnum.None)
-            openings.Add(directionToOriginChunk);
 
         if (openingDirections != null && openingDirections.Count > 0)
         {

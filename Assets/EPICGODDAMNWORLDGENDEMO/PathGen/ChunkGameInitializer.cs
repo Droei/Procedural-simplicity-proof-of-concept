@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ChunkGameInitializer
@@ -58,6 +59,8 @@ public class ChunkGameInitializer
 
         foreach (var chunk in chunks)
         {
+            //Debug.Log("Chunk " + chunk.location + "has: " + manager.GetNeighborChunksThroughLocation(chunk.location).Length);
+
             foreach (var direction in chunk.GetOpeningDirections)
             {
                 Vector3Int offset = ChunkHelperFunctions.DirectionToVector(direction);
@@ -65,8 +68,12 @@ public class ChunkGameInitializer
 
                 Chunk newChunk = manager.GetChunkByLocation(target);
                 newChunk.SetChunkType(ChunkTypeEnum.Normal);
-                newChunk.directionToOriginChunk = ChunkHelperFunctions.GetOpposite(direction);
-                newChunk.SetOpeningDirections(generator.PickRandomDirections(generator.FindAvailableOpenings(target), 1, 3));
+
+                var openings = generator.PickRandomDirections(generator.FindAvailableOpenings(target), 1, 3);
+                var incoming = manager.GetIncomingConnections(newChunk.location);
+
+                openings.AddRange(incoming.Where(dir => !openings.Contains(dir)));
+                newChunk.SetOpeningDirections(openings);
 
                 newChunks.Add(newChunk);
             }
