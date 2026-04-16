@@ -4,6 +4,16 @@ import com.daan.spelunky3D.pathgen.chunkcore.ChunkManager;
 import com.daan.spelunky3D.pathgen.enums.ChunkTypeEnum;
 import com.daan.spelunky3D.pathgen.enums.DirectionEnum;
 import com.daan.spelunky3D.pathgen.models.Chunk;
+import com.daan.spelunky3D.pathgen.models.Vector3Int;
+import com.sk89q.worldedit.WorldEdit;
+import com.sk89q.worldedit.EditSession;
+import com.sk89q.worldedit.WorldEditException;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.extent.clipboard.Clipboard;
+import com.sk89q.worldedit.function.operation.Operation;
+import com.sk89q.worldedit.function.operation.Operations;
+import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldedit.session.ClipboardHolder;
 import org.bukkit.Material;
 import org.bukkit.World;
 
@@ -14,12 +24,17 @@ public class DungeonWorldBuilder {
     private final World world;
     private final ChunkManager manager;
 
+    ChunkBuilder builder;
     private final int chunkSize = 16;
-    private final int baseY = 64;
 
-    public DungeonWorldBuilder(World world, ChunkManager manager) {
+    private final int originX = 0;
+    private final int originY = 64;
+    private final int originZ = 0;
+
+    public DungeonWorldBuilder(World world, ChunkManager manager, ChunkBuilder builder) {
         this.world = world;
         this.manager = manager;
+        this.builder = builder;
     }
 
     public void generate() {
@@ -39,75 +54,27 @@ public class DungeonWorldBuilder {
 
         int worldSize = 5 * chunkSize;
 
-        for (int x = 0; x < worldSize; x++)
+        for (int x = -worldSize; x < worldSize; x++)
             for (int y = 0; y < worldSize; y++)
-                for (int z = 0; z < worldSize; z++) {
+                for (int z = -worldSize; z < worldSize; z++) {
 
-                    world.getBlockAt(x, baseY + y, z).setType(Material.AIR);
+                    world.getBlockAt(originX + x, originY + y, originZ + z)
+                            .setType(Material.AIR);
                 }
     }
 
     private void generateChunk(Chunk chunk) {
 
-        int startX = chunk.location.x * chunkSize;
-        int startY = baseY + chunk.location.z * chunkSize;
-        int startZ = chunk.location.y * chunkSize;
+        int startX = originX + chunk.location.x * chunkSize;
+        int startY = originY + chunk.location.z * chunkSize;
+        int startZ = originZ + chunk.location.y * chunkSize;
 
-        int size = chunkSize;
+        Vector3Int vector3Int = new Vector3Int(startX, startY, startZ);
 
-        List<DirectionEnum> openings = chunk.getOpeningDirections();
+        System.out.println("Pasting chunk at: " + startX + ", " + startY + ", " + startZ);
 
-        if (!openings.contains(DirectionEnum.LEFT)) {
-            for (int y = 0; y < size; y++)
-                for (int z = 0; z < size; z++)
-                    world.getBlockAt(startX, startY + y, startZ + z)
-                            .setType(Material.STONE);
-        }
+        builder.buildChunk(vector3Int, world, chunk);
 
-        if (!openings.contains(DirectionEnum.RIGHT)) {
-            for (int y = 0; y < size; y++)
-                for (int z = 0; z < size; z++)
-                    world.getBlockAt(startX + size - 1, startY + y, startZ + z)
-                            .setType(Material.STONE);
-        }
-
-        if (!openings.contains(DirectionEnum.BACKWARD)) {
-            for (int y = 0; y < size; y++)
-                for (int x = 0; x < size; x++)
-                    world.getBlockAt(startX + x, startY + y, startZ)
-                            .setType(Material.STONE);
-        }
-
-        if (!openings.contains(DirectionEnum.FORWARD)) {
-            for (int y = 0; y < size; y++)
-                for (int x = 0; x < size; x++)
-                    world.getBlockAt(startX + x, startY + y, startZ + size - 1)
-                            .setType(Material.STONE);
-        }
-
-        ChunkTypeEnum type = chunk.getChunkType();
-
-        Material floorMaterial = Material.STONE;
-
-        if (type == ChunkTypeEnum.START) {
-            floorMaterial = Material.DIAMOND_BLOCK;
-        }
-        else if (type == ChunkTypeEnum.END) {
-            floorMaterial = Material.GOLD_BLOCK;
-        }
-
-        if (type != ChunkTypeEnum.HOLE_DOWN) {
-            for (int x = 0; x < size; x++)
-                for (int z = 0; z < size; z++)
-                    world.getBlockAt(startX + x, startY, startZ + z)
-                            .setType(floorMaterial);
-        }
-
-        if (type != ChunkTypeEnum.HOLE_UP) {
-            for (int x = 0; x < size; x++)
-                for (int z = 0; z < size; z++)
-                    world.getBlockAt(startX + x, startY + size - 1, startZ + z)
-                            .setType(Material.STONE);
-        }
+        //pasteClipboard(startX, startY, startZ);
     }
 }

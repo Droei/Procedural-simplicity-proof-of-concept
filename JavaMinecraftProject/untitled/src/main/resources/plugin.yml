@@ -7,3 +7,6 @@ commands:
   gendungeon:
     description: Generate the dungeon
     usage: /gendungeon
+  testchunk:
+    description: Pastes a test chunk
+    usage: /testchunk

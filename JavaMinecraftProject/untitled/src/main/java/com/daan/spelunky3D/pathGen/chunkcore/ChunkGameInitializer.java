@@ -72,7 +72,7 @@ public class ChunkGameInitializer {
         if (chosen.location.z != 0)
         {
             endChunk = manager.setDownHole(chosen);
-            setupOpenings(endChunk, 1, 3, finalCycle);
+            setupOpenings(endChunk, 2, 3, finalCycle);
 
         }
         else
