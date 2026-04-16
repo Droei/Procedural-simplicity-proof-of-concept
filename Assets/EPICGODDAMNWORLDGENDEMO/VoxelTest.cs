@@ -4,7 +4,7 @@ using UnityEngine;
 public class VoxelTest : MonoBehaviour
 {
     public int chunkSize = 16;
-    int gridSize = 3;
+    int gridSize = 5;
     public float spacing = 1f;
 
     [SerializeField] PathGenerator pathGenerator;
