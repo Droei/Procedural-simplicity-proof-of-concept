@@ -1,8 +1,8 @@
 package com.daan.spelunky3D.pathgen.enums;
 
 public enum DirectionEnum {
-    UP,
-    DOWN,
+    FORWARD,
+    BACKWARD,
     LEFT,
     RIGHT,
     NONE

@@ -55,13 +55,14 @@ public class ChunkGameInitializer {
 
     public Chunk generateFloor(Chunk startChunk, int cycles) {
 
+        boolean finalCycle = false;
         List<Chunk> current = new ArrayList<>();
         current.add(startChunk);
 
         for (int i = 0; i < cycles; i++) {
 
-            boolean isLastCycle = (i == cycles - 1);
-            current = createAttachedChunks(current, isLastCycle);
+            finalCycle = (i == cycles - 1);
+            current = createAttachedChunks(current, finalCycle);
         }
 
         Chunk chosen = current.get(RandomGen.range(0, current.size()));
@@ -69,15 +70,18 @@ public class ChunkGameInitializer {
         Chunk endChunk;
 
         if (chosen.location.z != 0)
+        {
             endChunk = manager.setDownHole(chosen);
-        else
-            endChunk = manager.setEndingChunk(chosen);
+            setupOpenings(endChunk, 1, 3, finalCycle);
 
-        setupOpenings(endChunk, 1, 3, false);
+        }
+        else
+        {
+            endChunk = manager.setEndingChunk(chosen);
+        }
+
 
         plugin.getLogger().info(endChunk.determineChunkDesign().toString());
-
-        finalizeAllChunks();
 
         return endChunk;
     }
@@ -118,37 +122,34 @@ public class ChunkGameInitializer {
 
         manager.evaluateNeighbors(chunk.location, incoming, blocked);
 
-        if (isFinalCycle) {
+        if (chunk.getChunkType() == ChunkTypeEnum.END ||
+                chunk.getChunkType() == ChunkTypeEnum.HOLE_DOWN) {
+
             chunk.setOpeningDirections(incoming);
             return;
         }
 
-        List<DirectionEnum> directions = generator
-                .pickRandomDirections(generator.findAvailableOpenings(chunk.location), min, max);
+        List<DirectionEnum> finalDirections = new ArrayList<>(incoming);
 
-        for (DirectionEnum dir : incoming) {
-            if (!directions.contains(dir)) {
-                directions.add(dir);
+        if (!isFinalCycle) {
+
+            List<DirectionEnum> available =
+                    new ArrayList<>(generator.findAvailableOpenings(chunk.location));
+
+            available.removeIf(dir ->
+                    blocked.contains(dir) || finalDirections.contains(dir)
+            );
+
+            int amount = RandomGen.range(min, Math.min(max, available.size()) + 1);
+
+            for (int i = 0; i < amount && !available.isEmpty(); i++) {
+                int index = RandomGen.range(0, available.size());
+                DirectionEnum chosen = available.remove(index);
+
+                finalDirections.add(chosen);
             }
         }
-        directions.removeIf(blocked::contains);
 
-        chunk.setOpeningDirections(directions);
-    }
-
-    private void finalizeAllChunks() {
-
-        for (Chunk chunk : manager.getChunks()) {
-
-            if (chunk.getChunkType() == ChunkTypeEnum.NOTHING)
-                continue;
-
-            List<DirectionEnum> incoming = new ArrayList<>();
-            List<DirectionEnum> blocked = new ArrayList<>();
-
-            manager.evaluateNeighbors(chunk.location, incoming, blocked);
-
-            chunk.setOpeningDirections(incoming);
-        }
+        chunk.setOpeningDirections(finalDirections);
     }
 }

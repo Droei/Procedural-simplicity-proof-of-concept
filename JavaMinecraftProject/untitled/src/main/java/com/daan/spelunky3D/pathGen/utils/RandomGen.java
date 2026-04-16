@@ -11,6 +11,7 @@ public class RandomGen {
     }
 
     public static int range(int min, int max) {
+        if (max <= min) return min;
         return rng.nextInt(max - min) + min;
     }
 

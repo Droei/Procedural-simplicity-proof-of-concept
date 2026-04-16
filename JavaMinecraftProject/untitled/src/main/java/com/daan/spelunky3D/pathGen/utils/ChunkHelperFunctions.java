@@ -1,7 +1,6 @@
 package com.daan.spelunky3D.pathgen.utils;
 
 import com.daan.spelunky3D.pathgen.enums.DirectionEnum;
-import com.daan.spelunky3D.pathgen.models.Chunk;
 import com.daan.spelunky3D.pathgen.models.Vector3Int;
 
 public class ChunkHelperFunctions {
@@ -13,8 +12,8 @@ public class ChunkHelperFunctions {
     }
 
     public static final DirectionEntry[] directions = {
-            new DirectionEntry(new Vector3Int(0, 1, 0), DirectionEnum.UP),
-            new DirectionEntry(new Vector3Int(0, -1, 0), DirectionEnum.DOWN),
+            new DirectionEntry(new Vector3Int(0, 1, 0), DirectionEnum.FORWARD),
+            new DirectionEntry(new Vector3Int(0, -1, 0), DirectionEnum.BACKWARD),
             new DirectionEntry(new Vector3Int(-1, 0, 0), DirectionEnum.LEFT),
             new DirectionEntry(new Vector3Int(1, 0, 0), DirectionEnum.RIGHT)
     };
@@ -33,8 +32,8 @@ public class ChunkHelperFunctions {
 
     public static Vector3Int directionToVector(DirectionEnum dir) {
         return switch (dir) {
-            case UP -> new Vector3Int(0, 1, 0);
-            case DOWN -> new Vector3Int(0, -1, 0);
+            case FORWARD -> new Vector3Int(0, 1, 0);
+            case BACKWARD -> new Vector3Int(0, -1, 0);
             case LEFT -> new Vector3Int(-1, 0, 0);
             case RIGHT -> new Vector3Int(1, 0, 0);
             default -> new Vector3Int(0, 0, 0);
@@ -43,8 +42,8 @@ public class ChunkHelperFunctions {
 
     public static DirectionEnum getOpposite(DirectionEnum dir) {
         return switch (dir) {
-            case UP -> DirectionEnum.DOWN;
-            case DOWN -> DirectionEnum.UP;
+            case FORWARD -> DirectionEnum.BACKWARD;
+            case BACKWARD -> DirectionEnum.FORWARD;
             case LEFT -> DirectionEnum.RIGHT;
             case RIGHT -> DirectionEnum.LEFT;
             default -> dir;
