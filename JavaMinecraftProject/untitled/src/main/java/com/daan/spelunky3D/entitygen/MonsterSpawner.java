@@ -1,23 +1,18 @@
 package com.daan.spelunky3D.entitygen;
 
-import com.daan.spelunky3D.entitygen.enums.SpawnableMonstersEnum;
 import com.daan.spelunky3D.entitygen.models.MonsterSpawnPoint;
 import com.daan.spelunky3D.entitygen.utils.ClipboardToWorldMapper;
-import com.daan.spelunky3D.entitygen.utils.MonsterMarkerExtractor;
+import com.daan.spelunky3D.entitygen.utils.ClipboardExtractor;
+import com.daan.spelunky3D.entitygen.utils.StructureExtractions;
 import com.daan.spelunky3D.pathgen.models.Vector3Int;
 import com.daan.spelunky3D.pathgen.utils.RandomGen;
-import com.sk89q.worldedit.WorldEditException;
 import com.sk89q.worldedit.extent.clipboard.Clipboard;
-import com.sk89q.worldedit.math.BlockVector3;
-import com.sk89q.worldedit.world.block.BlockState;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.sk89q.worldedit.world.block.BlockTypes.AIR;
 
 public class MonsterSpawner {
 
@@ -27,7 +22,7 @@ public class MonsterSpawner {
 
         spawnPoints.clear();
 
-        List<MonsterSpawnPoint> found = MonsterMarkerExtractor.extract(clipboard);
+        List<MonsterSpawnPoint> found = StructureExtractions.extractMonsters(clipboard);
         spawnPoints.addAll(found);
 
         return new ArrayList<>(spawnPoints);
