@@ -1,6 +1,7 @@
 package com.daan.spelunky3D;
 
 import com.daan.spelunky3D.commands.TestChunkCommand;
+import com.daan.spelunky3D.entitygen.MonsterSpawner;
 import com.daan.spelunky3D.pathgen.DungeonGenerator;
 import com.daan.spelunky3D.roomgen.ChunkBuilder;
 import com.daan.spelunky3D.roomgen.DungeonWorldBuilder;
@@ -22,14 +23,15 @@ public final class Spelunky3D extends JavaPlugin {
     Clipboard clipboard;
     private SchemLoader schemLoader;
     private ChunkBuilder chunkBuilder;
+    MonsterSpawner monsterSpawner;
 
     @Override
     public void onEnable() {
-
+        monsterSpawner = new MonsterSpawner();
         schemLoader = new SchemLoader(this);
         schemLoader.loadAll();
 
-        chunkBuilder = new ChunkBuilder(schemLoader);
+        chunkBuilder = new ChunkBuilder(schemLoader, monsterSpawner);
 
         getCommand("testchunk").setExecutor(new TestChunkCommand(chunkBuilder));
 

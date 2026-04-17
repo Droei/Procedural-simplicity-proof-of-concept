@@ -1,5 +1,7 @@
 package com.daan.spelunky3D.roomgen;
 
+import com.daan.spelunky3D.entitygen.MonsterSpawner;
+import com.daan.spelunky3D.entitygen.models.MonsterSpawnPoint;
 import com.daan.spelunky3D.pathgen.enums.ChunkTypeEnum;
 import com.daan.spelunky3D.pathgen.enums.DirectionEnum;
 import com.daan.spelunky3D.pathgen.models.Chunk;
@@ -8,6 +10,7 @@ import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.WorldEditException;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.extent.clipboard.BlockArrayClipboard;
 import com.sk89q.worldedit.extent.clipboard.Clipboard;
 import com.sk89q.worldedit.function.operation.Operation;
 import com.sk89q.worldedit.function.operation.Operations;
@@ -28,9 +31,10 @@ public class ChunkBuilder {
     private final int originZ = 0;
 
     Vector3Int location;
-
-    public ChunkBuilder(SchemLoader loader) {
+    MonsterSpawner monsterSpawner;
+    public ChunkBuilder(SchemLoader loader, MonsterSpawner monsterSpawner) {
         this.loader = loader;
+        this.monsterSpawner = monsterSpawner;
     }
 
     public void buildChunk(Vector3Int location, World world, Chunk chunk) {
@@ -71,7 +75,18 @@ public class ChunkBuilder {
         else if(chunk.getChunkType() == ChunkTypeEnum.START){
             paste(world, loader.get("floorStart"));
         } else {
-            paste(world, loader.get("floor"));
+            Clipboard original = loader.get("floor");
+
+            BlockArrayClipboard working = new BlockArrayClipboard(original.getRegion());
+            working.setOrigin(original.getOrigin());
+
+            for (BlockVector3 pos : original.getRegion()) {
+                working.setBlock(pos, original.getBlock(pos));
+            }
+
+            monsterSpawner.getAndClearMonsterIndications(working);
+            paste(world, working);
+            monsterSpawner.spawnMonsters(world, location);
         }
 
         if(chunk.getChunkType() == ChunkTypeEnum.HOLE_UP){

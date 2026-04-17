@@ -29,7 +29,7 @@ public class SchemLoader {
             plugin.getLogger().info("Created schematics folder: Chunk/");
         }
 
-        load("floor", new File(dir, "floor.schem"));
+        load("floor", new File(dir, "floorWithMobs.schem"));
         load("ceiling", new File(dir, "ceiling.schem"));
         load("wallNorth", new File(dir, "wallNorth.schem"));
         load("wallSouth", new File(dir, "wallSouth.schem"));

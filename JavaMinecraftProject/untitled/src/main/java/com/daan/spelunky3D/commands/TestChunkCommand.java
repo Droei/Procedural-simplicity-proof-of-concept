@@ -29,8 +29,6 @@ public class TestChunkCommand implements CommandExecutor {
         chunk.getOpeningDirections().add(DirectionEnum.EAST);
         chunk.getOpeningDirections().add(DirectionEnum.WEST);
 
-        chunk.setChunkType(ChunkTypeEnum.END);
-
         Vector3Int vector3Int = new Vector3Int(
                 player.getLocation().getBlockX(),
                 player.getLocation().getBlockY(),
