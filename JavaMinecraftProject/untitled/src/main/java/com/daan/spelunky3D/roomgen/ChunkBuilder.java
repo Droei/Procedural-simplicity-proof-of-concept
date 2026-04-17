@@ -1,6 +1,7 @@
 package com.daan.spelunky3D.roomgen;
 
 import com.daan.spelunky3D.entitygen.MonsterSpawner;
+import com.daan.spelunky3D.entitygen.PlayerSpawner;
 import com.daan.spelunky3D.entitygen.models.MonsterSpawnPoint;
 import com.daan.spelunky3D.pathgen.enums.ChunkTypeEnum;
 import com.daan.spelunky3D.pathgen.enums.DirectionEnum;
@@ -32,9 +33,11 @@ public class ChunkBuilder {
 
     Vector3Int location;
     MonsterSpawner monsterSpawner;
-    public ChunkBuilder(SchemLoader loader, MonsterSpawner monsterSpawner) {
+    PlayerSpawner playerSpawner;
+    public ChunkBuilder(SchemLoader loader, MonsterSpawner monsterSpawner, PlayerSpawner playerSpawner) {
         this.loader = loader;
         this.monsterSpawner = monsterSpawner;
+        this.playerSpawner = playerSpawner;
     }
 
     public void buildChunk(Vector3Int location, World world, Chunk chunk) {
@@ -72,8 +75,20 @@ public class ChunkBuilder {
         else if(chunk.getChunkType() == ChunkTypeEnum.END){
             paste(world, loader.get("floorEnd"));
         }
-        else if(chunk.getChunkType() == ChunkTypeEnum.START){
-            paste(world, loader.get("floorStart"));
+        else if (chunk.getChunkType() == ChunkTypeEnum.START) {
+
+            Clipboard original = loader.get("floorStart");
+
+            BlockArrayClipboard working = new BlockArrayClipboard(original.getRegion());
+            working.setOrigin(original.getOrigin());
+
+            for (BlockVector3 pos : original.getRegion()) {
+                working.setBlock(pos, original.getBlock(pos));
+            }
+
+            playerSpawner.getAndClearCrimsonPlanks(working);
+            paste(world, working);
+            playerSpawner.teleportPlayers(world, location);
         } else {
             Clipboard original = loader.get("floor");
 

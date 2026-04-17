@@ -20,10 +20,7 @@ public class ClipboardExtractor {
         T map(BlockState state, BlockVector3 relative);
     }
 
-    public static <T> List<T> extract(
-            Clipboard clipboard,
-            MarkerMapper<T> mapper
-    ) {
+    public static <T> List<T> extract(Clipboard clipboard, MarkerMapper<T> mapper) {
         List<T> results = new ArrayList<>();
 
         BlockVector3 min = clipboard.getMinimumPoint();

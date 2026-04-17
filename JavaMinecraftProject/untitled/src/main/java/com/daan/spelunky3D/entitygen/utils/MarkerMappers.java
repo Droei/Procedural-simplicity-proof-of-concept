@@ -1,6 +1,7 @@
 package com.daan.spelunky3D.entitygen.utils;
 
 import com.daan.spelunky3D.entitygen.enums.SpawnableMonstersEnum;
+import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.world.block.BlockState;
 
 public class MarkerMappers {
@@ -15,5 +16,12 @@ public class MarkerMappers {
             case "minecraft:creeper_head" -> SpawnableMonstersEnum.CREEPER;
             default -> null;
         };
+    }
+
+    public static BlockVector3 mapToCrimsonPlank(BlockState state, BlockVector3 relative) {
+        if (!state.getBlockType().id().equals("minecraft:crimson_planks")) {
+            return null;
+        }
+        return relative;
     }
 }

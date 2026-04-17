@@ -24,7 +24,7 @@ public class TestChunkCommand implements CommandExecutor {
         if (!(sender instanceof Player player)) return true;
         player.sendMessage("testchunk executed");
         Chunk chunk = new Chunk(new Vector3Int(0,0,0));
-        chunk.setChunkType(ChunkTypeEnum.NORMAL);
+        chunk.setChunkType(ChunkTypeEnum.START);
 
         chunk.getOpeningDirections().add(DirectionEnum.EAST);
         chunk.getOpeningDirections().add(DirectionEnum.WEST);
