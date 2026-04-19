@@ -15,8 +15,11 @@ import com.sk89q.worldedit.extent.clipboard.BlockArrayClipboard;
 import com.sk89q.worldedit.extent.clipboard.Clipboard;
 import com.sk89q.worldedit.function.operation.Operation;
 import com.sk89q.worldedit.function.operation.Operations;
+import com.sk89q.worldedit.function.pattern.RandomPattern;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.session.ClipboardHolder;
+import com.sk89q.worldedit.world.block.BlockState;
+import com.sk89q.worldedit.world.block.BlockTypes;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
@@ -99,6 +102,8 @@ public class ChunkBuilder {
                 working.setBlock(pos, original.getBlock(pos));
             }
 
+            applyOreDistribution(working);
+
             monsterSpawner.getAndClearMonsterIndications(working);
             paste(world, working);
             monsterSpawner.spawnMonsters(world, location);
@@ -110,7 +115,32 @@ public class ChunkBuilder {
             paste(world, loader.get("ceiling"));
         }
     }
+    private void applyOreDistribution(BlockArrayClipboard clipboard) {
 
+        RandomPattern stonePattern = new RandomPattern();
+        stonePattern.add(BlockTypes.STONE.getDefaultState(), 0.95);
+        stonePattern.add(BlockTypes.IRON_ORE.getDefaultState(), 0.03);
+        stonePattern.add(BlockTypes.GOLD_ORE.getDefaultState(), 0.015);
+        stonePattern.add(BlockTypes.DIAMOND_ORE.getDefaultState(), 0.005);
+
+        RandomPattern deepslatePattern = new RandomPattern();
+        deepslatePattern.add(BlockTypes.DEEPSLATE.getDefaultState(), 0.95);
+        deepslatePattern.add(BlockTypes.DEEPSLATE_IRON_ORE.getDefaultState(), 0.03);
+        deepslatePattern.add(BlockTypes.DEEPSLATE_GOLD_ORE.getDefaultState(), 0.015);
+        deepslatePattern.add(BlockTypes.DEEPSLATE_DIAMOND_ORE.getDefaultState(), 0.005);
+
+        for (BlockVector3 pos : clipboard.getRegion()) {
+            BlockState current = clipboard.getBlock(pos);
+            String id = current.getBlockType().id();
+
+            if (id.equals("minecraft:stone") || id.equals("minecraft:andersite")) {
+                clipboard.setBlock(pos, stonePattern.applyBlock(pos));
+            }
+            else if (id.equals("minecraft:cobbled_deepslate") || id.equals("minecraft:deepslate")) {
+                clipboard.setBlock(pos, deepslatePattern.applyBlock(pos));
+            }
+        }
+    }
     private void paste(World world, Clipboard clipboard) {
 
         if (clipboard == null) {

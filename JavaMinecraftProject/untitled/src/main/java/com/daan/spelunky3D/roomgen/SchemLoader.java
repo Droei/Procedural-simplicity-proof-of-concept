@@ -23,24 +23,25 @@ public class SchemLoader {
     public void loadAll() {
 
         File dir = new File(plugin.getDataFolder(), "Chunk");
+        File bigDir = new File(plugin.getDataFolder(), "ChunkParts");
 
         if (!dir.exists()) {
             dir.mkdirs();
             plugin.getLogger().info("Created schematics folder: Chunk/");
         }
 
-        load("floor", new File(dir, "floorWithMobs.schem"));
-        load("ceiling", new File(dir, "ceiling.schem"));
-        load("wallNorth", new File(dir, "wallNorth.schem"));
-        load("wallSouth", new File(dir, "wallSouth.schem"));
-        load("wallEast", new File(dir, "wallEast.schem"));
-        load("wallWest", new File(dir, "wallWest.schem"));
-        load("openingNorth", new File(dir, "openingNorth.schem"));
-        load("openingSouth", new File(dir, "openingSouth.schem"));
-        load("openingEast", new File(dir,  "openingEast.schem"));
-        load("openingWest", new File(dir,  "openingWest.schem"));
-        load("ceilingHole", new File(dir,  "ceilingHole.schem"));
-        load("floorHole", new File(dir,  "floorHole.schem"));
+        load("floor", new File(bigDir, "NormalFloor/normalFloor3.schem"));
+        load("ceiling", new File(bigDir, "NormalCeiling/normalCeiling3.schem"));
+        load("wallNorth", new File(bigDir,  "WallNorth/wallNorth1.schem"));
+        load("wallSouth", new File(bigDir,  "WallSouth/wallSouth1.schem"));
+        load("wallEast", new File(bigDir,   "WallEast/wallEast1.schem"));
+        load("wallWest", new File(bigDir,   "WallWest/wallWest1.schem"));
+        load("openingNorth", new File(bigDir, "OpeningNorth/openingNorth1.schem"));
+        load("openingSouth", new File(bigDir, "OpeningSouth/openingSouth1.schem"));
+        load("openingEast",  new File(bigDir, "OpeningEast/openingEast1.schem"));
+        load("openingWest",  new File(bigDir, "OpeningWest/openingWest1.schem"));
+        load("ceilingHole", new File(bigDir,  "CeilingHole/ceilingHole1.schem"));
+        load("floorHole", new File(bigDir,  "FloorHole/floorHole1.schem"));
         load("floorStart", new File(dir,  "floorStart.schem"));
         load("floorEnd", new File(dir,  "floorEnd.schem"));
         plugin.getLogger().info("Loaded schematics: " + schematics.keySet());

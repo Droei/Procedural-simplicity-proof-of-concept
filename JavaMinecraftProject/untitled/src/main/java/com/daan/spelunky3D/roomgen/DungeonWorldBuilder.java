@@ -71,10 +71,6 @@ public class DungeonWorldBuilder {
 
         Vector3Int vector3Int = new Vector3Int(startX, startY, startZ);
 
-        System.out.println("Pasting chunk at: " + startX + ", " + startY + ", " + startZ);
-
         builder.buildChunk(vector3Int, world, chunk);
-
-        //pasteClipboard(startX, startY, startZ);
     }
 }
