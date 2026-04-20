@@ -49,7 +49,7 @@ public final class Spelunky3D extends JavaPlugin {
 
     public void generateDungeon() {
 
-        DungeonGenerator generator = new DungeonGenerator(this, 5, false, 9992490);
+        DungeonGenerator generator = new DungeonGenerator(this, 5, true, 9169522);
 
         generator.generateDungeon();
 

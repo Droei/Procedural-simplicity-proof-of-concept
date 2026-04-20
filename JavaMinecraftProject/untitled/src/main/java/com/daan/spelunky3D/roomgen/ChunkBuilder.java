@@ -48,84 +48,100 @@ public class ChunkBuilder {
 
         List<DirectionEnum> open = chunk.getOpeningDirections();
 
-        if (open.contains(DirectionEnum.SOUTH)) {
-            paste(world, loader.get("openingNorth"));
-        } else {
-            paste(world, loader.get("wallNorth"));
+        paste(world, prepareClipboard(
+                open.contains(DirectionEnum.SOUTH)
+                        ? loader.get("openingNorth")
+                        : loader.get("wallNorth")
+        ));
+
+        paste(world, prepareClipboard(
+                open.contains(DirectionEnum.NORTH)
+                        ? loader.get("openingSouth")
+                        : loader.get("wallSouth")
+        ));
+
+        paste(world, prepareClipboard(
+                open.contains(DirectionEnum.WEST)
+                        ? loader.get("openingWest")
+                        : loader.get("wallWest")
+        ));
+
+        paste(world, prepareClipboard(
+                open.contains(DirectionEnum.EAST)
+                        ? loader.get("openingEast")
+                        : loader.get("wallEast")
+        ));
+
+        Clipboard floor = switch (chunk.getChunkType()) {
+            case START -> loader.get("floorStart");
+            case END -> loader.get("floorEnd");
+            case HOLE_DOWN -> loader.get("floorHole");
+            default -> loader.get("floor");
+        };
+
+        Clipboard workingFloor = prepareClipboard(floor);
+
+        if (chunk.getChunkType() == ChunkTypeEnum.START) {
+            playerSpawner.getAndClearCrimsonPlanks(workingFloor);
         }
 
-        if (open.contains(DirectionEnum.NORTH)) {
-            paste(world, loader.get("openingSouth"));
-        } else {
-            paste(world, loader.get("wallSouth"));
-        }
+        paste(world, workingFloor);
 
-        if (open.contains(DirectionEnum.WEST)) {
-            paste(world, loader.get("openingWest"));
-        } else {
-            paste(world, loader.get("wallWest"));
-        }
+        switch (chunk.getChunkType()) {
 
-        if (open.contains(DirectionEnum.EAST)) {
-            paste(world, loader.get("openingEast"));
-        } else {
-            paste(world, loader.get("wallEast"));
-        }
-
-        if(chunk.getChunkType() == ChunkTypeEnum.HOLE_DOWN){
-            paste(world, loader.get("floorHole"));
-        }
-        else if(chunk.getChunkType() == ChunkTypeEnum.END){
-            paste(world, loader.get("floorEnd"));
-        }
-        else if (chunk.getChunkType() == ChunkTypeEnum.START) {
-
-            Clipboard original = loader.get("floorStart");
-
-            BlockArrayClipboard working = new BlockArrayClipboard(original.getRegion());
-            working.setOrigin(original.getOrigin());
-
-            for (BlockVector3 pos : original.getRegion()) {
-                working.setBlock(pos, original.getBlock(pos));
+            case START -> {
+                playerSpawner.teleportPlayers(world, location);
             }
 
-            playerSpawner.getAndClearCrimsonPlanks(working);
-            paste(world, working);
-            playerSpawner.teleportPlayers(world, location);
-        } else {
-            Clipboard original = loader.get("floor");
-
-            BlockArrayClipboard working = new BlockArrayClipboard(original.getRegion());
-            working.setOrigin(original.getOrigin());
-
-            for (BlockVector3 pos : original.getRegion()) {
-                working.setBlock(pos, original.getBlock(pos));
+            case END -> {
+                monsterSpawner.spawnMonsters(world, location);
             }
 
-            applyOreDistribution(working);
+            case HOLE_DOWN -> {
+            }
 
-            monsterSpawner.getAndClearMonsterIndications(working);
-            paste(world, working);
-            monsterSpawner.spawnMonsters(world, location);
+            default -> {
+                monsterSpawner.spawnMonsters(world, location);
+            }
         }
 
-        if(chunk.getChunkType() == ChunkTypeEnum.HOLE_UP){
-            paste(world, loader.get("ceilingHole"));
-        } else {
-            paste(world, loader.get("ceiling"));
+        paste(world, prepareClipboard(
+                chunk.getChunkType() == ChunkTypeEnum.HOLE_UP
+                        ? loader.get("ceilingHole")
+                        : loader.get("ceiling")
+        ));
+    }
+
+    private Clipboard prepareClipboard(Clipboard original) {
+        BlockArrayClipboard working = new BlockArrayClipboard(original.getRegion());
+        working.setOrigin(original.getOrigin());
+
+        for (BlockVector3 pos : original.getRegion()) {
+            working.setBlock(pos, original.getBlock(pos));
         }
+
+        applyOreDistribution(working);
+
+        monsterSpawner.getAndClearMonsterIndications(working);
+
+        return working;
     }
     private void applyOreDistribution(BlockArrayClipboard clipboard) {
 
         RandomPattern stonePattern = new RandomPattern();
-        stonePattern.add(BlockTypes.STONE.getDefaultState(), 0.95);
+        stonePattern.add(BlockTypes.STONE.getDefaultState(), 0.70);
+        stonePattern.add(BlockTypes.ANDESITE.getDefaultState(), 0.10);
+        stonePattern.add(BlockTypes.COBBLESTONE.getDefaultState(), 0.10);
+
         stonePattern.add(BlockTypes.IRON_ORE.getDefaultState(), 0.03);
         stonePattern.add(BlockTypes.GOLD_ORE.getDefaultState(), 0.015);
         stonePattern.add(BlockTypes.DIAMOND_ORE.getDefaultState(), 0.005);
 
         RandomPattern deepslatePattern = new RandomPattern();
-        deepslatePattern.add(BlockTypes.DEEPSLATE.getDefaultState(), 0.95);
-        deepslatePattern.add(BlockTypes.DEEPSLATE_IRON_ORE.getDefaultState(), 0.03);
+        deepslatePattern.add(BlockTypes.DEEPSLATE.getDefaultState(), 0.75);
+        deepslatePattern.add(BlockTypes.COBBLED_DEEPSLATE.getDefaultState(), 0.15);
+
+        deepslatePattern.add(BlockTypes.DEEPSLATE_IRON_ORE.getDefaultState(), 0.025);
         deepslatePattern.add(BlockTypes.DEEPSLATE_GOLD_ORE.getDefaultState(), 0.015);
         deepslatePattern.add(BlockTypes.DEEPSLATE_DIAMOND_ORE.getDefaultState(), 0.005);
 
@@ -133,10 +149,17 @@ public class ChunkBuilder {
             BlockState current = clipboard.getBlock(pos);
             String id = current.getBlockType().id();
 
-            if (id.equals("minecraft:stone") || id.equals("minecraft:andersite")) {
+            if (id.equals("minecraft:stone")
+                    || id.equals("minecraft:andesite")
+                    || id.equals("minecraft:cobblestone")
+                    || id.equals("minecraft:gravel")) {
+
                 clipboard.setBlock(pos, stonePattern.applyBlock(pos));
             }
-            else if (id.equals("minecraft:cobbled_deepslate") || id.equals("minecraft:deepslate")) {
+
+            else if (id.equals("minecraft:cobbled_deepslate")
+                    || id.equals("minecraft:deepslate")) {
+
                 clipboard.setBlock(pos, deepslatePattern.applyBlock(pos));
             }
         }
