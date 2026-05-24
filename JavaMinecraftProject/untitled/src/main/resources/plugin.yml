@@ -10,3 +10,9 @@ commands:
   testchunk:
     description: Pastes a test chunk
     usage: /testchunk
+  testvillager:
+    description: Spawn a test shop
+  addpoints:
+    description: Add points
+  resetpoints:
+    description: Reset points

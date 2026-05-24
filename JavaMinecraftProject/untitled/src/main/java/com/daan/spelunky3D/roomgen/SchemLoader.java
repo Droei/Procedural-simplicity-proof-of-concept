@@ -48,10 +48,16 @@ public class SchemLoader {
 
 
         load("wallEast", new File(bigDir,   "WallEast/wallEast1.schem"));
+        load("wallEast", new File(bigDir,   "WallEast/wallEast2.schem"));
+
         load("wallWest", new File(bigDir,   "WallWest/wallWest1.schem"));
+        load("wallWest", new File(bigDir,   "WallWest/wallWest2.schem"));
 
         load("openingNorth", new File(bigDir, "OpeningNorth/openingNorth1.schem"));
+        load("openingNorth", new File(bigDir, "OpeningNorth/openingNorth2.schem"));
+
         load("openingSouth", new File(bigDir, "OpeningSouth/openingSouth1.schem"));
+        load("openingSouth", new File(bigDir, "OpeningSouth/openingSouth2.schem"));
 
         load("openingEast",  new File(bigDir, "OpeningEast/openingEast1.schem"));
         load("openingEast",  new File(bigDir, "OpeningEast/openingEast2.schem"));

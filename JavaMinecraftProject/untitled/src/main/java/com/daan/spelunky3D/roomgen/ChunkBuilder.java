@@ -7,6 +7,7 @@ import com.daan.spelunky3D.pathgen.enums.ChunkTypeEnum;
 import com.daan.spelunky3D.pathgen.enums.DirectionEnum;
 import com.daan.spelunky3D.pathgen.models.Chunk;
 import com.daan.spelunky3D.pathgen.models.Vector3Int;
+import com.daan.spelunky3D.shopkeeper.shop.ShopSpawner;
 import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.WorldEditException;
@@ -37,10 +38,13 @@ public class ChunkBuilder {
     Vector3Int location;
     MonsterSpawner monsterSpawner;
     PlayerSpawner playerSpawner;
-    public ChunkBuilder(SchemLoader loader, MonsterSpawner monsterSpawner, PlayerSpawner playerSpawner) {
+    private final ShopSpawner shopSpawner;
+
+    public ChunkBuilder(SchemLoader loader, MonsterSpawner monsterSpawner, PlayerSpawner playerSpawner, ShopSpawner shopSpawner) {
         this.loader = loader;
         this.monsterSpawner = monsterSpawner;
         this.playerSpawner = playerSpawner;
+        this.shopSpawner = shopSpawner;
     }
 
     public void buildChunk(Vector3Int location, World world, Chunk chunk) {
@@ -83,6 +87,7 @@ public class ChunkBuilder {
 
         if (chunk.getChunkType() == ChunkTypeEnum.START) {
             playerSpawner.getAndClearCrimsonPlanks(workingFloor);
+            shopSpawner.getAndClearEmeraldBlocks(workingFloor);
         }
 
         paste(world, workingFloor);
@@ -91,6 +96,7 @@ public class ChunkBuilder {
 
             case START -> {
                 playerSpawner.teleportPlayers(world, location);
+                shopSpawner.spawnShops(world,location);
             }
 
             case END -> {

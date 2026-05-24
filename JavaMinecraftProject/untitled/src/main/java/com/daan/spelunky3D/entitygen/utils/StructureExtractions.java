@@ -11,21 +11,46 @@ public class StructureExtractions {
 
     private StructureExtractions() {}
 
-    public static List<MonsterSpawnPoint> extractMonsters(Clipboard clipboard) {
 
-        List<MonsterSpawnPoint> points = ClipboardExtractor.extract(
-                clipboard, (state, relative) -> {
+    public static List<MonsterSpawnPoint> extractMonsters(
+            Clipboard clipboard
+    ) {
+
+        return ClipboardExtractor.extract(
+                clipboard,
+                (state, relative) -> {
+
                     SpawnableMonstersEnum type =
                             MarkerMappers.mapToMonster(state);
 
                     if (type == null) return null;
 
-                    return new MonsterSpawnPoint(type, relative);
+                    return new MonsterSpawnPoint(
+                            type,
+                            relative
+                    );
                 }
         );
-        return points;
     }
-    public static List<BlockVector3> extractCrimsonPlanks(Clipboard clipboard) {
-        return ClipboardExtractor.extract(clipboard, MarkerMappers::mapToCrimsonPlank);
+
+
+    public static List<BlockVector3> extractCrimsonPlanks(
+            Clipboard clipboard
+    ) {
+
+        return ClipboardExtractor.extract(
+                clipboard,
+                MarkerMappers::mapToCrimsonPlank
+        );
+    }
+
+    public static List<BlockVector3> extractEmeraldBlocks(
+            Clipboard clipboard
+    ) {
+
+        return ClipboardExtractor.extract(
+                clipboard,
+                MarkerMappers::mapToEmeraldBlock
+        );
     }
 }
