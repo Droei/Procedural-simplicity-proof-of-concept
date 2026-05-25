@@ -54,30 +54,39 @@ public class ChunkBuilder {
         this.location = location;
 
         List<DirectionEnum> open = chunk.getOpeningDirections();
+        List<DirectionEnum> openEmpty = chunk.getEmptyOpeningDirections();
 
-        paste(world, prepareClipboard(
-                open.contains(DirectionEnum.SOUTH)
-                        ? loader.get("openingNorth")
-                        : loader.get("wallNorth")
-        ));
+        if (!openEmpty.contains(DirectionEnum.SOUTH)) {
+            paste(world, prepareClipboard(
+                    open.contains(DirectionEnum.SOUTH)
+                            ? loader.get("openingNorth")
+                            : loader.get("wallNorth")
+            ));
+        }
 
-        paste(world, prepareClipboard(
-                open.contains(DirectionEnum.NORTH)
-                        ? loader.get("openingSouth")
-                        : loader.get("wallSouth")
-        ));
+        if (!openEmpty.contains(DirectionEnum.NORTH)) {
+            paste(world, prepareClipboard(
+                    open.contains(DirectionEnum.NORTH)
+                            ? loader.get("openingSouth")
+                            : loader.get("wallSouth")
+            ));
+        }
 
-        paste(world, prepareClipboard(
-                open.contains(DirectionEnum.WEST)
-                        ? loader.get("openingWest")
-                        : loader.get("wallWest")
-        ));
+        if (!openEmpty.contains(DirectionEnum.WEST)) {
+            paste(world, prepareClipboard(
+                    open.contains(DirectionEnum.WEST)
+                            ? loader.get("openingWest")
+                            : loader.get("wallWest")
+            ));
+        }
 
-        paste(world, prepareClipboard(
-                open.contains(DirectionEnum.EAST)
-                        ? loader.get("openingEast")
-                        : loader.get("wallEast")
-        ));
+        if (!openEmpty.contains(DirectionEnum.EAST)) {
+            paste(world, prepareClipboard(
+                    open.contains(DirectionEnum.EAST)
+                            ? loader.get("openingEast")
+                            : loader.get("wallEast")
+            ));
+        }
 
         Clipboard floor = switch (chunk.getChunkType()) {
             case START -> loader.get("floorStart");

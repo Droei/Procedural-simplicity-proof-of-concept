@@ -118,18 +118,24 @@ public class ChunkGameInitializer {
     private void setupOpenings(Chunk chunk, int min, int max, boolean isFinalCycle) {
 
         List<DirectionEnum> incoming = new ArrayList<>();
+
+        // All incoming directions that have don't need a door
+        List<DirectionEnum> incomingEmpty = new ArrayList<>();
+
         List<DirectionEnum> blocked = new ArrayList<>();
 
-        manager.evaluateNeighbors(chunk.location, incoming, blocked);
+        manager.evaluateNeighbors(chunk.location, incoming, incomingEmpty, blocked);
 
         if (chunk.getChunkType() == ChunkTypeEnum.END ||
                 chunk.getChunkType() == ChunkTypeEnum.HOLE_DOWN) {
 
             chunk.setOpeningDirections(incoming);
+            chunk.setEmptyOpeningDirections(incomingEmpty);
             return;
         }
 
         List<DirectionEnum> finalDirections = new ArrayList<>(incoming);
+        List<DirectionEnum> finalEmptyDirections = new ArrayList<>(incomingEmpty);
 
         if (!isFinalCycle) {
 
@@ -147,9 +153,12 @@ public class ChunkGameInitializer {
                 DirectionEnum chosen = available.remove(index);
 
                 finalDirections.add(chosen);
+                if(RandomGen.nextBoolean())
+                    finalEmptyDirections.add(chosen);
             }
         }
 
+        chunk.setEmptyOpeningDirections(finalEmptyDirections);
         chunk.setOpeningDirections(finalDirections);
     }
 }

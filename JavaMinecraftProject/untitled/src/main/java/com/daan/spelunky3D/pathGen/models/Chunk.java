@@ -19,6 +19,10 @@ public class Chunk {
     public ChunkDesignEnum chunkDesign;
     private ChunkTypeEnum chunkType = ChunkTypeEnum.NOTHING;
 
+    // New variable that doesn't change any core logic, it holds all opening directions that won't have a door
+    private List<DirectionEnum> emptyOpeningDirections = new ArrayList<>();
+
+
     public Chunk(Vector3Int location) {
         this.id = ChunkHelperFunctions.parseLocationToId(location);
         this.location = location;
@@ -26,6 +30,10 @@ public class Chunk {
 
     public Chunk setOpeningDirections(List<DirectionEnum> openingDirections) {
         this.openingDirections = openingDirections;
+        return this;
+    }
+    public Chunk setEmptyOpeningDirections(List<DirectionEnum> emptyOpeningDirections) {
+        this.emptyOpeningDirections = emptyOpeningDirections;
         return this;
     }
 
@@ -36,6 +44,10 @@ public class Chunk {
 
     public ChunkTypeEnum getChunkType() {
         return chunkType;
+    }
+
+    public List<DirectionEnum> getEmptyOpeningDirections(){
+        return emptyOpeningDirections;
     }
 
     public List<DirectionEnum> getOpeningDirections() {
@@ -56,6 +68,9 @@ public class Chunk {
         String openings = (openingDirections != null && !openingDirections.isEmpty())
                 ? openingDirections.stream().map(Enum::name).collect(Collectors.joining(", "))
                 : "None";
+        String emptyOpenings = (emptyOpeningDirections != null && !emptyOpeningDirections.isEmpty())
+                ? emptyOpeningDirections.stream().map(Enum::name).collect(Collectors.joining(", "))
+                : "None";
 
         return "Chunk [" +
                 "ID: " + id + ", " +
@@ -63,6 +78,7 @@ public class Chunk {
                 "Type: " + chunkType + ", " +
                 "Design: " + chunkDesign + ", " +
                 "Openings: [" + openings + "]" +
+                "EmptyOpenings: [" + emptyOpenings + "]" +
                 "]";
     }
 

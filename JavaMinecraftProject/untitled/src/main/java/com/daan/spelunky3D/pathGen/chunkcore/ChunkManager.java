@@ -67,6 +67,7 @@ public class ChunkManager {
 
     public void evaluateNeighbors(Vector3Int location,
                                   List<DirectionEnum> incoming,
+                                  List<DirectionEnum> incomingOpen,
                                   List<DirectionEnum> blocked) {
 
         for (DirectionEnum direction : DirectionEnum.values()) {
@@ -92,6 +93,10 @@ public class ChunkManager {
                 incoming.add(direction);
             } else {
                 blocked.add(direction);
+            }
+
+            if (neighbor.getEmptyOpeningDirections().contains(opposite)) {
+                incomingOpen.add(direction);
             }
         }
     }
