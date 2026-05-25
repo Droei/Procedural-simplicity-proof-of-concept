@@ -10,6 +10,7 @@ import com.daan.spelunky3D.pathgen.DungeonGenerator;
 import com.daan.spelunky3D.roomgen.ChunkBuilder;
 import com.daan.spelunky3D.roomgen.DungeonWorldBuilder;
 import com.daan.spelunky3D.roomgen.SchemLoader;
+import com.daan.spelunky3D.roomgen.roomModifiers.RoomRandomPilarGenerator;
 import com.daan.spelunky3D.shopkeeper.shop.ShopListener;
 import com.daan.spelunky3D.shopkeeper.shop.ShopManager;
 import com.daan.spelunky3D.shopkeeper.economy.PlayerConnectionListener;
@@ -34,7 +35,7 @@ public final class Spelunky3D extends JavaPlugin {
 
     private PointManager pointManager;
     private PointBarManager pointBarManager;
-
+    private RoomRandomPilarGenerator roomRandomPilarGenerator;
     @Override
     public void onEnable() {
 
@@ -62,13 +63,16 @@ public final class Spelunky3D extends JavaPlugin {
         monsterSpawner = new MonsterSpawner();
         playerSpawner = new PlayerSpawner();
 
+        roomRandomPilarGenerator = new RoomRandomPilarGenerator();
+
         schemLoader = new SchemLoader(this);
         schemLoader.loadAll();
         chunkBuilder = new ChunkBuilder(
                 schemLoader,
                 monsterSpawner,
                 playerSpawner,
-                shopSpawner
+                shopSpawner,
+                roomRandomPilarGenerator
         );
     }
 
@@ -138,6 +142,7 @@ public final class Spelunky3D extends JavaPlugin {
 
         World world = getServer().getWorlds().getFirst();
 
+        shopManager.removeAllShops(world);
         DungeonWorldBuilder builder = new DungeonWorldBuilder(
                 world,
                 generator.getChunkManager(),

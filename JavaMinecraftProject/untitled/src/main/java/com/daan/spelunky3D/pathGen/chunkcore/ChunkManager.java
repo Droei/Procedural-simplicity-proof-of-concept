@@ -69,7 +69,6 @@ public class ChunkManager {
                                   List<DirectionEnum> incoming,
                                   List<DirectionEnum> blocked) {
 
-        // Loop through all directions manually (no tuple system)
         for (DirectionEnum direction : DirectionEnum.values()) {
 
             if (direction == DirectionEnum.NONE) continue;

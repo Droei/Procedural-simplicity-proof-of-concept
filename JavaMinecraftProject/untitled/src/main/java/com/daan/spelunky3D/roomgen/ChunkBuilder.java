@@ -7,6 +7,7 @@ import com.daan.spelunky3D.pathgen.enums.ChunkTypeEnum;
 import com.daan.spelunky3D.pathgen.enums.DirectionEnum;
 import com.daan.spelunky3D.pathgen.models.Chunk;
 import com.daan.spelunky3D.pathgen.models.Vector3Int;
+import com.daan.spelunky3D.roomgen.roomModifiers.RoomRandomPilarGenerator;
 import com.daan.spelunky3D.shopkeeper.shop.ShopSpawner;
 import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.EditSession;
@@ -38,13 +39,15 @@ public class ChunkBuilder {
     Vector3Int location;
     MonsterSpawner monsterSpawner;
     PlayerSpawner playerSpawner;
-    private final ShopSpawner shopSpawner;
+    ShopSpawner shopSpawner;
+    RoomRandomPilarGenerator roomRandomPilarGenerator;
 
-    public ChunkBuilder(SchemLoader loader, MonsterSpawner monsterSpawner, PlayerSpawner playerSpawner, ShopSpawner shopSpawner) {
+    public ChunkBuilder(SchemLoader loader, MonsterSpawner monsterSpawner, PlayerSpawner playerSpawner, ShopSpawner shopSpawner, RoomRandomPilarGenerator roomRandomPilarGenerator) {
         this.loader = loader;
         this.monsterSpawner = monsterSpawner;
         this.playerSpawner = playerSpawner;
         this.shopSpawner = shopSpawner;
+        this.roomRandomPilarGenerator = roomRandomPilarGenerator;
     }
 
     public void buildChunk(Vector3Int location, World world, Chunk chunk) {
@@ -126,6 +129,7 @@ public class ChunkBuilder {
             working.setBlock(pos, original.getBlock(pos));
         }
 
+        roomRandomPilarGenerator.apply(working);
         applyOreDistribution(working);
 
         monsterSpawner.getAndClearMonsterIndications(working);

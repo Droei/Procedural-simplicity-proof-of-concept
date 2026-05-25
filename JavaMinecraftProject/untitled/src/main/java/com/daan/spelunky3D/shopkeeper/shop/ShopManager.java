@@ -5,6 +5,7 @@ import com.daan.spelunky3D.shopkeeper.economy.PointManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
@@ -103,7 +104,20 @@ public class ShopManager {
 
         prices.put(Material.DIAMOND_BOOTS, 175);
     }
+    public void removeAllShops(World world) {
 
+        world.getEntities().stream()
+
+                .filter(entity ->
+                        entity instanceof Villager)
+
+                .filter(entity ->
+                        entity.getScoreboardTags()
+                                .contains("shop_villager"))
+
+                .forEach(entity ->
+                        entity.remove());
+    }
     public void openShop(Player player) {
 
         Inventory inventory = Bukkit.createInventory(
