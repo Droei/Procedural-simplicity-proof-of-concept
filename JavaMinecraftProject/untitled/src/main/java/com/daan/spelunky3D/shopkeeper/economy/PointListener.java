@@ -29,9 +29,10 @@ public class PointListener implements Listener {
 
         int points = getOreValue(block.getType());
 
+        event.setDropItems(false);
+
         if (points <= 0) return;
 
-        event.setDropItems(false);
 
         pointManager.addPoints(player, points);
 
@@ -69,6 +70,8 @@ public class PointListener implements Listener {
 
             case DIAMOND_ORE -> 60;
             case DEEPSLATE_DIAMOND_ORE -> 75;
+
+            case SEA_LANTERN -> 300;
 
             default -> 0;
         };

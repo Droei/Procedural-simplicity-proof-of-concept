@@ -32,6 +32,7 @@ public class SchemLoader {
             plugin.getLogger().info("Created schematics folder: Chunk/");
         }
 
+        load("floor", new File(bigDir, "NormalFloor/normalFloorLoot.schem"));
         load("floor", new File(bigDir, "NormalFloor/normalLavaFloor.schem"));
 
         load("floor", new File(bigDir, "NormalFloor/normalFloor1.schem"));
